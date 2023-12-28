@@ -1,0 +1,36 @@
+---
+name: "Simple Checks"
+
+on:
+  workflow_call:
+
+jobs:
+  metadata-validation:
+    name: Validate Image Metadata
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect changed files
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          list-files: shell
+          filters: |
+            cue:
+              - added|modified: "apps/**/metadata.yaml"
+              - added|modified: "apps/**/metadata.json"
+              - added|modified: "./metadata.rules.cue"
+
+      - name: Setup CUE
+        if: ${{ steps.filter.outputs.cue == 'true' }}
+        uses: cue-lang/setup-cue@v1.0.0
+
+      # Run against all files to ensure they are tested if the cue schema is changed.
+      - name: Validate image metadata
+        if: ${{ steps.filter.outputs.cue == 'true' }}
+        shell: bash
+        run: |
+          find ./apps/ -name metadata.json | xargs -I {} cue vet --schema '#Spec' {} ./metadata.rules.cue
+          find ./apps/ -name metadata.yaml | xargs -I {} cue vet --schema '#Spec' {} ./metadata.rules.cue
