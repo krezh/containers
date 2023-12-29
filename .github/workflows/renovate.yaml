@@ -43,7 +43,7 @@ env:
 jobs:
   renovate:
     name: Renovate
-    runs-on: containers-runner
+    runs-on: ubuntu-latest
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@v1.6.2
