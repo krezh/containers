@@ -43,12 +43,12 @@ tasks:
   download-goss:
     silent: true
     vars:
-      GOSS_VERSION: v0.3.21
+      GOSS_VERSION: v0.3.21 # renovate: datasource=github-tags depName=goss-org/goss
     cmds:
       - mkdir -p ./.goss
       - curl -fsSL -o ./.goss/goss https://github.com/aelsabbahy/goss/releases/download/{{.GOSS_VERSION}}/goss-linux-amd64
       - chmod +x ./.goss/goss
-      - curl -fsSL -o ./.goss/dgoss https://raw.githubusercontent.com/aelsabbahy/goss/{{.GOSS_VERSION}}/extras/dgoss/dgoss
+      - curl -fsSL -o ./.goss/dgoss https://github.com/goss-org/goss/releases/download/{{.GOSS_VERSION}}/dgoss
       - chmod +x ./.goss/dgoss
     status:
       - test -f ./.goss/goss
