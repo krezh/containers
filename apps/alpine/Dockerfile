@@ -54,11 +54,11 @@ RUN \
     && chmod -R 775 /config \
     && printf "/bin/bash /scripts/greeting.sh\n" > /etc/profile.d/greeting.sh \
     && printf "umask %d\n" "${UMASK}" > /etc/profile.d/umask.sh \
-    && ln -s /usr/bin/neovim   /usr/local/bin/vi \
-    && ln -s /usr/bin/neovim   /usr/local/bin/vim \
-    && ln -s /usr/bin/neovim /usr/local/bin/nano \
-    && ln -s /usr/bin/neovim /usr/local/bin/neovim \
-    && ln -s /usr/bin/neovim /usr/local/bin/emacs \
+    && ln -s /usr/bin/nvim   /usr/local/bin/vi \
+    && ln -s /usr/bin/nvim   /usr/local/bin/vim \
+    && ln -s /usr/bin/nvim /usr/local/bin/nano \
+    && ln -s /usr/bin/nvim /usr/local/bin/neovim \
+    && ln -s /usr/bin/nvim /usr/local/bin/emacs \
     && ln -s /usr/bin/catatonit /sbin/tini \
     && rm -rf /tmp/*
 
