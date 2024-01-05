@@ -60,7 +60,7 @@ Each Image will be built with a `rolling` tag, along with tags specific to it's 
 Container | Channel | Image | Latest Tags
 --- | --- | --- | ---
 [actions-runner](https://github.com/krezh/containers/pkgs/container/actions-runner) | stable | ghcr.io/krezh/actions-runner |![2](https://img.shields.io/badge/2-blue?style=flat-square) ![2.311](https://img.shields.io/badge/2.311-blue?style=flat-square) ![2.311.0](https://img.shields.io/badge/2.311.0-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
-[par2cmdline-turbo]() | stable | ghcr.io/krezh/par2cmdline-turbo |
+[par2cmdline-turbo](https://github.com/krezh/containers/pkgs/container/par2cmdline-turbo) | stable | ghcr.io/krezh/par2cmdline-turbo |![1.1.1](https://img.shields.io/badge/1.1.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
 [sabnzbd]() | stable | ghcr.io/krezh/sabnzbd |
 
 
