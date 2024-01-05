@@ -37,10 +37,12 @@ RUN \
     apk add --no-cache \
         ca-certificates catatonit bash \
         bind-tools coreutils curl iputils jo \
-        jq moreutils nano pv tzdata unzip \
+        jq moreutils pv tzdata unzip \
         util-linux wget \
     && \
-    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.19/main unrar
+    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main unrar \
+    && \
+    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.19/community neovim
 
 #hadolint ignore=DL3018
 RUN \
@@ -52,11 +54,11 @@ RUN \
     && chmod -R 775 /config \
     && printf "/bin/bash /scripts/greeting.sh\n" > /etc/profile.d/greeting.sh \
     && printf "umask %d\n" "${UMASK}" > /etc/profile.d/umask.sh \
-    && ln -s /usr/bin/vi   /usr/local/bin/vi \
-    && ln -s /usr/bin/vi   /usr/local/bin/vim \
-    && ln -s /usr/bin/nano /usr/local/bin/nano \
-    && ln -s /usr/bin/nano /usr/local/bin/neovim \
-    && ln -s /usr/bin/nano /usr/local/bin/emacs \
+    && ln -s /usr/bin/neovim   /usr/local/bin/vi \
+    && ln -s /usr/bin/neovim   /usr/local/bin/vim \
+    && ln -s /usr/bin/neovim /usr/local/bin/nano \
+    && ln -s /usr/bin/neovim /usr/local/bin/neovim \
+    && ln -s /usr/bin/neovim /usr/local/bin/emacs \
     && ln -s /usr/bin/catatonit /sbin/tini \
     && rm -rf /tmp/*
 
