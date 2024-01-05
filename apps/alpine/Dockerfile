@@ -40,7 +40,7 @@ RUN \
         jq moreutils nano pv tzdata unzip \
         util-linux wget \
     && \
-    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main unrar
+    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.19/main unrar
 
 #hadolint ignore=DL3018
 RUN \
