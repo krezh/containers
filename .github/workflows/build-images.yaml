@@ -204,6 +204,11 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.vendor=${{ env.LOWERCASE_REPO_OWNER }}
 
+      - name: Scan image
+        uses: anchore/scan-action@v3
+        with:
+          image: "${{ steps.prepare-build-outputs.outputs.image_name }}@${{ steps.build.outputs.digest }}"
+
       - name: Run Goss Tests
         id: dgoss
         if: ${{ matrix.image.tests_enabled }}
