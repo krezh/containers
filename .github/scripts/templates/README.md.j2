@@ -19,21 +19,6 @@ The goal of this project is to support [semantically versioned](https://semver.o
 
 We also try to adhere to a [KISS principle](https://en.wikipedia.org/wiki/KISS_principle), logging to stdout, [one process per container](https://testdriven.io/tips/59de3279-4a2d-4556-9cd0-b444249ed31e/), no [s6-overlay](https://github.com/just-containers/s6-overlay) and all images are built on top of [Alpine](https://hub.docker.com/_/alpine) or [Ubuntu](https://hub.docker.com/_/ubuntu).
 
-## Tag immutability
-
-The containers built here do not use immutable tags, as least not in the more common way you have seen from [linuxserver.io](https://fleet.linuxserver.io/) or [Bitnami](https://bitnami.com/stacks/containers).
-
-We do take a similar approach but instead of appending a `-ls69` or `-r420` prefix to the tag we instead insist on pinning to the sha256 digest of the image, while this is not as pretty it is just as functional in making the images immutable.
-
-| Container                                          | Immutable |
-|----------------------------------------------------|-----------|
-| `ghcr.io/krezh/sonarr:rolling`                   | ❌         |
-| `ghcr.io/krezh/sonarr:3.0.8.1507`                | ❌         |
-| `ghcr.io/krezh/sonarr:rolling@sha256:8053...`    | ✅         |
-| `ghcr.io/krezh/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
-
-_If pinning an image to the sha256 digest, tools like [Renovate](https://github.com/renovatebot/renovate) support updating the container on a digest or application version change._
-
 ## Passing arguments to a application
 
 Some applications do not support defining configuration via environment variables and instead only allow certain config to be set in the command line arguments for the app. To circumvent this, for applications that have an `entrypoint.sh` read below.
