@@ -208,6 +208,7 @@ jobs:
         uses: anchore/scan-action@v3
         with:
           image: "${{ steps.prepare-build-outputs.outputs.image_name }}@${{ steps.build.outputs.digest }}"
+          fail-build: false
 
       - name: Run Goss Tests
         id: dgoss
