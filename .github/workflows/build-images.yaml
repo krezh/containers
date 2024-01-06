@@ -209,6 +209,7 @@ jobs:
         with:
           image: "${{ steps.prepare-build-outputs.outputs.image_name }}@${{ steps.build.outputs.digest }}"
           fail-build: false
+          output-format: table
 
       - name: Run Goss Tests
         id: dgoss
