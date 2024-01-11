@@ -10,7 +10,7 @@ on:
     branches: ["main"]
     paths:
       - "apps/**"
-      - ".github/scripts/templates/**"
+      - ".github/templates/**"
       - "!apps/**/metadata.json"
       - "!apps/**/metadata.yaml"
       - "!apps/**/README.md"
@@ -34,7 +34,7 @@ jobs:
     with:
       appsToBuild: "${{ needs.get-changed-images.outputs.addedOrModifiedImages }}"
       pushImages: true
-      sendNotifications: true
+      sendNotifications: false
 
   render-readme:
     name: Render Readme

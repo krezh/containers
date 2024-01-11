@@ -1,9 +1,8 @@
 <!---
 NOTE: AUTO-GENERATED FILE
-to edit this file, instead edit its template at: ./github/scripts/templates/README.md.j2
+to edit this file, instead edit its template at: ..github/templates/README.md.j2
 -->
 <div align="center">
-
 
 ## Containers
 
@@ -27,12 +26,12 @@ Some applications do not support defining configuration via environment variable
 2. Look up the documentation for the application and find a argument you would like to set.
 3. Set the argument in the `args` section, be sure to include `entrypoint.sh` as the first arg and any application specific arguments thereafter.
 
-    ```yaml
-    args:
-      - /entrypoint.sh
-      - --port
-      - "8080"
-    ```
+   ```yaml
+   args:
+     - /entrypoint.sh
+     - --port
+     - "8080"
+   ```
 
 ## Configuration volume
 
@@ -42,13 +41,12 @@ For applications that need to have persistent configuration data the config volu
 
 Each Image will be built with a `rolling` tag, along with tags specific to it's version. Available Images Below
 
-Container | Channel | Image | Latest Tags
---- | --- | --- | ---
-[actions-runner](https://github.com/krezh/containers/pkgs/container/actions-runner) | stable | ghcr.io/krezh/actions-runner |![2](https://img.shields.io/badge/2-blue?style=flat-square) ![2.311](https://img.shields.io/badge/2.311-blue?style=flat-square) ![2.311.0](https://img.shields.io/badge/2.311.0-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
-[par2cmdline-turbo](https://github.com/krezh/containers/pkgs/container/par2cmdline-turbo) | stable | ghcr.io/krezh/par2cmdline-turbo |![1.1.1](https://img.shields.io/badge/1.1.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
-[readeck](https://github.com/krezh/containers/pkgs/container/readeck) | stable | ghcr.io/krezh/readeck |![0](https://img.shields.io/badge/0-blue?style=flat-square) ![0.11](https://img.shields.io/badge/0.11-blue?style=flat-square) ![0.11.1](https://img.shields.io/badge/0.11.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
-[sabnzbd](https://github.com/krezh/containers/pkgs/container/sabnzbd) | stable | ghcr.io/krezh/sabnzbd |![4](https://img.shields.io/badge/4-blue?style=flat-square) ![4.2](https://img.shields.io/badge/4.2-blue?style=flat-square) ![4.2.1](https://img.shields.io/badge/4.2.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
-
+| Container                                                                                 | Channel | Image                           | Latest Tags                                                                                                                                                                                                                                                                     |
+| ----------------------------------------------------------------------------------------- | ------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [actions-runner](https://github.com/krezh/containers/pkgs/container/actions-runner)       | stable  | ghcr.io/krezh/actions-runner    | ![2](https://img.shields.io/badge/2-blue?style=flat-square) ![2.311](https://img.shields.io/badge/2.311-blue?style=flat-square) ![2.311.0](https://img.shields.io/badge/2.311.0-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square) |
+| [par2cmdline-turbo](https://github.com/krezh/containers/pkgs/container/par2cmdline-turbo) | stable  | ghcr.io/krezh/par2cmdline-turbo | ![1.1.1](https://img.shields.io/badge/1.1.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)                                                                                                                                     |
+| [readeck](https://github.com/krezh/containers/pkgs/container/readeck)                     | stable  | ghcr.io/krezh/readeck           | ![0](https://img.shields.io/badge/0-blue?style=flat-square) ![0.11](https://img.shields.io/badge/0.11-blue?style=flat-square) ![0.11.1](https://img.shields.io/badge/0.11.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)     |
+| [sabnzbd](https://github.com/krezh/containers/pkgs/container/sabnzbd)                     | stable  | ghcr.io/krezh/sabnzbd           | ![4](https://img.shields.io/badge/4-blue?style=flat-square) ![4.2](https://img.shields.io/badge/4.2-blue?style=flat-square) ![4.2.1](https://img.shields.io/badge/4.2.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)         |
 
 ## Contributing
 
@@ -60,16 +58,16 @@ Container | Channel | Image | Latest Tags
 6. Include any additional files if required
 7. Use Taskfile to build and test your image
 
-    ```ruby
-    task APP=sonarr CHANNEL=main test
-    ```
+   ```ruby
+   task APP=sonarr CHANNEL=main test
+   ```
 
 ### Automated tags
 
 Here's an example of how tags are created in the GitHub workflows, be careful with `metadata.json` as it does affect the outcome of how the tags will be created when the application is built.
 
 | Application | Channel   | Stable  | Base    | Generated Tag               |
-|-------------|-----------|---------|---------|-----------------------------|
+| ----------- | --------- | ------- | ------- | --------------------------- |
 | `ubuntu`    | `focal`   | `true`  | `true`  | `ubuntu:focal-rolling`      |
 | `ubuntu`    | `focal`   | `true`  | `true`  | `ubuntu:focal-19880312`     |
 | `alpine`    | `3.16`    | `true`  | `true`  | `alpine:rolling`            |
