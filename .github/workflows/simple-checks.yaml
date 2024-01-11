@@ -1,5 +1,5 @@
 ---
-name: "simple-checks"
+name: "Simple Checks"
 
 on:
   workflow_call:
