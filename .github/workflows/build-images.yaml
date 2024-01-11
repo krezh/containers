@@ -45,7 +45,7 @@ jobs:
         uses: actions/setup-python@v5.0.0
         with:
           python-version: 3.x
-          cache: pip
+          # cache: pip
 
       - name: Install Python Requirements
         run: pip install -r ./.github/scripts/requirements.txt && pip freeze
@@ -165,8 +165,8 @@ jobs:
           platforms: ${{ matrix.image.platform }}
           file: ${{ matrix.image.dockerfile }}
           outputs: ${{ steps.prepare-build-outputs.outputs.outputs }}
-          #cache-from: type=gha
-          #cache-to: type=gha,mode=max
+          # cache-from: type=gha
+          # cache-to: type=gha,mode=max
           labels: |-
             org.opencontainers.image.title=${{ matrix.image.name }}
             org.opencontainers.image.url=https://ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ matrix.image.name }}

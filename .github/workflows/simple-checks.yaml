@@ -1,5 +1,5 @@
 ---
-name: "Workflow call: Lint"
+name: "simple-checks"
 
 on:
   workflow_call:
