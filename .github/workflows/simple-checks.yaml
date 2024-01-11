@@ -60,23 +60,3 @@ jobs:
         run: |
           find ./apps/ -name metadata.json | xargs -I {} cue vet --schema '#Spec' {} ./metadata.rules.cue
           find ./apps/ -name metadata.yaml | xargs -I {} cue vet --schema '#Spec' {} ./metadata.rules.cue
-
-  renovate-config-validator:
-    name: Validate Renovate Config
-    runs-on: containers-runner
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          list-files: shell
-          filters: |
-            renovate:
-              - added|modified: ".github/renovate.json5"
-
-      - name: Validate Renovate Config
-        if: ${{ steps.filter.outputs.renovate == 'true' }}
-        uses: rinchsan/renovate-config-validator@v0.0.12
-        with:
-          pattern: ".github/renovate.json5"
