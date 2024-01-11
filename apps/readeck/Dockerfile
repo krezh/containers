@@ -3,6 +3,8 @@ ARG TARGETPLATFORM
 ARG VERSION
 ARG CHANNEL
 
+LABEL org.opencontainers.image.source="https://codeberg.org/readeck/readeck"
+
 ENV READECK_SERVER_HOST=0.0.0.0
 ENV READECK_SERVER_PORT=8080
 ENV READECK_USE_X_FORWARDED=true
@@ -25,11 +27,9 @@ RUN \
         /tmp/*
 
 USER kah
-COPY ./apps/readeck/entrypoint.sh /entrypoint.sh
+COPY ./entrypoint.sh /entrypoint.sh
 
 VOLUME /config
 WORKDIR /config
 
 CMD ["/entrypoint.sh"]
-
-LABEL org.opencontainers.image.source="https://codeberg.org/readeck/readeck"
