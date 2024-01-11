@@ -47,7 +47,7 @@ jobs:
           filters: |
             cue:
               - added|modified: "apps/**/metadata.yaml"
-              - added|modified: "./metadata.rules.cue"
+              - added|modified: "./.github/lint/metadata.rules.cue"
 
       - name: Setup CUE
         if: ${{ steps.filter.outputs.cue == 'true' }}
@@ -58,5 +58,5 @@ jobs:
         shell: bash
         # Run against all files to ensure they are tested if the cue schema is changed.
         run: |
-          find ./apps/ -name metadata.json | xargs -I {} cue vet --schema '#Spec' {} ./metadata.rules.cue
-          find ./apps/ -name metadata.yaml | xargs -I {} cue vet --schema '#Spec' {} ./metadata.rules.cue
+          find ./apps/ -name metadata.json | xargs -I {} cue vet --schema '#Spec' {} ./.github/lint/metadata.rules.cue
+          find ./apps/ -name metadata.yaml | xargs -I {} cue vet --schema '#Spec' {} ./.github/lint/metadata.rules.cue
