@@ -1,6 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>krezh/renovate-config"
+    "local>krezh/renovate-config",
+    "github>krezh/containers//.github/renovate/autoMerge.json5"
   ]
 }
