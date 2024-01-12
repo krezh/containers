@@ -9,11 +9,10 @@ ARG TARGETOS
 
 FROM ghcr.io/weaveworks/tf-runner:v${VERSION} as runner
 
+LABEL org.opencontainers.image.target_platform=$TARGETPLATFORM
+LABEL org.opencontainers.image.target_architecture=$TARGETARCH
+LABEL org.opencontainers.image.target_os=$TARGETOS
 LABEL org.opencontainers.image.source="https://github.com/weaveworks/tf-controller"
-LABEL krezh.image.target_platform=$TARGETPLATFORM
-LABEL krezh.image.target_architecture=$TARGETARCH
-LABEL krezh.image.target_os=$TARGETOS
-LABEL org.opencontainers.image.source="https://github.com/TwiN/gatus"
 
 USER root
 
