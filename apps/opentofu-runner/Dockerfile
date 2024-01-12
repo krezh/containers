@@ -1,11 +1,8 @@
-ARG TARGETPLATFORM
-
-FROM --platform=$TARGETPLATFORM ghcr.io/opentofu/opentofu:1.6.0 as tofu
+FROM ghcr.io/opentofu/opentofu:1.6.0 as tofu
 
 ARG VERSION
-ARG TARGETPLATFORM
 
-FROM --platform=$TARGETPLATFORM ghcr.io/weaveworks/tf-runner:v${VERSION}
+FROM ghcr.io/weaveworks/tf-runner:v${VERSION}
 
 ARG TARGETPLATFORM
 ARG CHANNEL
