@@ -10,24 +10,24 @@ jobs:
     runs-on: containers-runner
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
 
-      - uses: dorny/paths-filter@v2
-        id: filter
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
         with:
-          list-files: shell
-          filters: |
+          files_yaml: |
             yaml:
-              - added|modified: "**.yaml"
-              - added|modified: "**.yml"
+              - **.yaml
+              - **.yml
 
       - name: "Yamllint"
-        if: ${{ steps.filter.outputs.yaml == 'true' }}
+        if: ${{ steps.changed-files.outputs.yaml_any_changed == 'true' }}
         uses: karancode/yamllint-github-action@master
         with:
-          yamllint_file_or_dir: "${{ steps.filter.outputs.yaml_files }}"
+          yamllint_file_or_dir: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
           yamllint_strict: false
           yamllint_comment: true
           yamllint_config_filepath: .github/lint/yamllint.yaml
@@ -38,23 +38,27 @@ jobs:
     name: Validate Image Metadata
     runs-on: containers-runner
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v2
-        id: filter
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
         with:
-          list-files: shell
-          filters: |
+          fetch-depth: 0
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files_yaml: |
             cue:
-              - added|modified: "apps/**/metadata.yaml"
-              - added|modified: "./.github/lint/metadata.rules.cue"
+              - .github/lint/metadata.rules.cue
+              - apps/**/metadata.json
+              - apps/**/metadata.yaml
 
       - name: Setup CUE
-        if: ${{ steps.filter.outputs.cue == 'true' }}
-        uses: cue-lang/setup-cue@1713281ae501e533ff06108005dffeab9e2e5203
+        if: ${{ steps.changed-files.outputs.cue_any_changed == 'true' }}
+        uses: cue-lang/setup-cue@v1.0.0
 
       - name: Validate image metadata
-        if: ${{ steps.filter.outputs.cue == 'true' }}
+        if: ${{ steps.changed-files.outputs.all_changed_and_modified_files == 'true' }}
         shell: bash
         # Run against all files to ensure they are tested if the cue schema is changed.
         run: |
