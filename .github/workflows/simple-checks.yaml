@@ -20,8 +20,8 @@ jobs:
         with:
           files_yaml: |
             yaml:
-              - **.yaml
-              - **.yml
+              - "**.yaml"
+              - "**.yml"
 
       - name: "Yamllint"
         if: ${{ steps.changed-files.outputs.yaml_any_changed == 'true' }}
@@ -49,9 +49,9 @@ jobs:
         with:
           files_yaml: |
             cue:
-              - .github/lint/metadata.rules.cue
-              - apps/**/metadata.json
-              - apps/**/metadata.yaml
+              - ".github/lint/metadata.rules.cue"
+              - "apps/**/metadata.json"
+              - "apps/**/metadata.yaml"
 
       - name: Setup CUE
         if: ${{ steps.changed-files.outputs.cue_any_changed == 'true' }}
