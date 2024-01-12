@@ -166,7 +166,7 @@ jobs:
           file: ${{ matrix.image.dockerfile }}
           outputs: ${{ steps.prepare-build-outputs.outputs.outputs }}
           cache-from: type=local,src=/home/runner/_work/_tool/.buildx-cache
-          cache-to: type=local,dest=/home/runner/_work/_tool/.buildx-cache-new,mode=max
+          cache-to: type=local,dest=/home/runner/_work/_tool/.buildx-cache,mode=max
           labels: |-
             org.opencontainers.image.title=${{ matrix.image.name }}
             org.opencontainers.image.url=https://ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ matrix.image.name }}
@@ -175,13 +175,13 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.vendor=${{ env.LOWERCASE_REPO_OWNER }}
 
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /home/runner/_work/_tool/.buildx-cache
-          mv /home/runner/_work/_tool/.buildx-cache-new /home/runner/_work/_tool/.buildx-cache
+      #- # Temp fix
+      #  # https://github.com/docker/build-push-action/issues/252
+      #  # https://github.com/moby/buildkit/issues/1896
+      #  name: Move cache
+      #  run: |
+      #    rm -rf /home/runner/_work/_tool/.buildx-cache
+      #    mv /home/runner/_work/_tool/.buildx-cache-new /home/runner/_work/_tool/.buildx-cache
 
       - name: Run Goss Tests
         id: dgoss
