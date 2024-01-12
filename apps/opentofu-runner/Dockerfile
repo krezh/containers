@@ -1,3 +1,4 @@
+ARG VERSION
 FROM ghcr.io/opentofu/opentofu:1.6.0 as terraform
 
 ARG CHANNEL
