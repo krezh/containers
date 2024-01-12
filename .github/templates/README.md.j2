@@ -11,8 +11,6 @@ _An opinionated collection of container images_
 
 </div>
 
-Welcome to our container images, if looking for a container start by [browsing the GitHub Packages page for this repo's packages](https://github.com/krezh?tab=packages&repo_name=containers).
-
 ## Mission statement
 
 The goal of this project is to support [semantically versioned](https://semver.org/), [rootless](https://rootlesscontaine.rs/), and [multiple architecture](https://www.docker.com/blog/multi-arch-build-and-images-the-simple-way/) containers for various applications.
@@ -58,11 +56,11 @@ Container | Channel | Image | Latest Tags
 2. Get familiar with the structure of the repositroy
 3. Find a similar application in the apps directory
 4. Copy & Paste an application and update the directory name
-5. Update `metadata.json`, `Dockerfile`, `ci/latest.sh`, `ci/goss.yaml` and make it suit the application build
+5. Update `metadata.yaml`, `Dockerfile`, `ci/latest.sh`, `ci/goss.yaml` and make it suit the application build
 6. Include any additional files if required
 7. Use Taskfile to build and test your image
 
-    ```ruby
+    ```bash
     task APP=sonarr CHANNEL=main test
     ```
 
