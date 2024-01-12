@@ -27,7 +27,7 @@ jobs:
         run: echo "${{ steps.changed-files.outputs.all_changed_and_modified_files }}"
 
       - name: "Yamllint"
-        if: ${{ steps.changed-files.outputs.yaml_any_changed == 'true' }}
+        if: ${{ steps.changed-files.outputs.all_changed_and_modified_files_count > 0 }}
         uses: karancode/yamllint-github-action@master
         with:
           yamllint_file_or_dir: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
@@ -60,7 +60,7 @@ jobs:
         run: echo "${{ steps.changed-files.outputs.all_changed_and_modified_files }}"
 
       - name: Setup CUE
-        if: ${{ steps.changed-files.outputs.cue_any_changed == 'true' }}
+        if: ${{ steps.changed-files.outputs.all_changed_and_modified_files_count > 0 }}
         uses: cue-lang/setup-cue@v1.0.0
 
       - name: Validate image metadata
