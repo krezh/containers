@@ -50,13 +50,18 @@ on:
 jobs:
   del_runs:
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
     steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1.6.3
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2.0.6
         with:
-          token: ${{ github.token }}
+          token: "${{ steps.app-token.outputs.token }}"
           repository: ${{ github.repository }}
           retain_days: ${{ github.event.inputs.days }}
           keep_minimum_runs: ${{ github.event.inputs.minimum_runs }}
