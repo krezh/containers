@@ -40,9 +40,23 @@ For applications that need to have persistent configuration data the config volu
 
 Each Image will be built with a `rolling` tag, along with tags specific to it's version. Available Images Below
 
+### App Images
+
 Container | Channel | Image | Latest Tags
 --- | --- | --- | ---
 {% for image in app_images | sort(attribute="name") -%}
+[{{ image.name }}]({{ image.html_url }}) | {{ image.channel }} | ghcr.io/{{ image.owner }}/{{ image.name }} |
+{%- set space = joiner(" ") -%}
+{%- for tag in image.tags -%}
+{{ space() }}![{{ tag }}](https://img.shields.io/badge/{{ tag.replace("-", "--") }}-{% if tag == "rolling" %}green{% else %}blue{% endif %}?style=flat-square)
+{%- endfor %}
+{% endfor %}
+
+### Base Images
+
+Container | Channel | Image | Latest Tags
+--- | --- | --- | ---
+{% for image in base_images | sort(attribute="name") -%}
 [{{ image.name }}]({{ image.html_url }}) | {{ image.channel }} | ghcr.io/{{ image.owner }}/{{ image.name }} |
 {%- set space = joiner(" ") -%}
 {%- for tag in image.tags -%}
@@ -69,15 +83,15 @@ Container | Channel | Image | Latest Tags
 Here's an example of how tags are created in the GitHub workflows, be careful with `metadata.json` as it does affect the outcome of how the tags will be created when the application is built.
 
 | Application | Channel   | Stable | Base  | Generated Tag               |
-|-------------|-----------|--------|-------|-----------------------------|
-| `ubuntu`    | `focal`   |  ✅  |  ✅ | `ubuntu:focal-rolling`      |
+|:-------------|:-----------|:--------:|:-------:|:-----------------------------|
 | `ubuntu`    | `focal`   |  ✅  |  ✅ | `ubuntu:focal-19880312`     |
+| `ubuntu`    | `focal`   |  ✅  |  ✅ | `ubuntu:focal-rolling`      |
 | `alpine`    | `3.16`    |  ✅  |  ✅ | `alpine:rolling`            |
 | `alpine`    | `3.16`    |  ✅  |  ✅ | `alpine:3.16.0`             |
-| `sonarr`    | `develop` |  ❌  |  ❌ | `sonarr-develop:3.0.8.1538` |
-| `sonarr`    | `develop` |  ❌  |  ❌ | `sonarr-develop:rolling`    |
 | `sonarr`    | `main`    |  ✅  |  ❌ | `sonarr:3.0.8.1507`         |
 | `sonarr`    | `main`    |  ✅  |  ❌ | `sonarr:rolling`            |
+| `sonarr`    | `develop` |  ❌  |  ❌ | `sonarr-develop:3.0.8.1538` |
+| `sonarr`    | `develop` |  ❌  |  ❌ | `sonarr-develop:rolling`    |
 
 ## Deprecations
 
