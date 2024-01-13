@@ -40,6 +40,8 @@ For applications that need to have persistent configuration data the config volu
 
 Each Image will be built with a `rolling` tag, along with tags specific to it's version. Available Images Below
 
+### App Images
+
 Container | Channel | Image | Latest Tags
 --- | --- | --- | ---
 [actions-runner](https://github.com/krezh/containers/pkgs/container/actions-runner) | stable | ghcr.io/krezh/actions-runner |![2](https://img.shields.io/badge/2-blue?style=flat-square) ![2.311](https://img.shields.io/badge/2.311-blue?style=flat-square) ![2.311.0](https://img.shields.io/badge/2.311.0-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
@@ -47,6 +49,14 @@ Container | Channel | Image | Latest Tags
 [par2cmdline-turbo](https://github.com/krezh/containers/pkgs/container/par2cmdline-turbo) | stable | ghcr.io/krezh/par2cmdline-turbo |![1.1.1](https://img.shields.io/badge/1.1.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
 [readeck](https://github.com/krezh/containers/pkgs/container/readeck) | stable | ghcr.io/krezh/readeck |![0](https://img.shields.io/badge/0-blue?style=flat-square) ![0.11](https://img.shields.io/badge/0.11-blue?style=flat-square) ![0.11.2](https://img.shields.io/badge/0.11.2-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
 [sabnzbd](https://github.com/krezh/containers/pkgs/container/sabnzbd) | stable | ghcr.io/krezh/sabnzbd |![4](https://img.shields.io/badge/4-blue?style=flat-square) ![4.2](https://img.shields.io/badge/4.2-blue?style=flat-square) ![4.2.1](https://img.shields.io/badge/4.2.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
+
+
+### Base Images
+
+Container | Channel | Image | Latest Tags
+--- | --- | --- | ---
+[alpine](https://github.com/krezh/containers/pkgs/container/alpine) | 3.19 | ghcr.io/krezh/alpine |![3.19.0](https://img.shields.io/badge/3.19.0-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
+[ubuntu](https://github.com/krezh/containers/pkgs/container/ubuntu) | jammy | ghcr.io/krezh/ubuntu |![jammy-20231211.1](https://img.shields.io/badge/jammy--20231211.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
 
 
 ## Contributing
@@ -68,15 +78,15 @@ Container | Channel | Image | Latest Tags
 Here's an example of how tags are created in the GitHub workflows, be careful with `metadata.json` as it does affect the outcome of how the tags will be created when the application is built.
 
 | Application | Channel   | Stable | Base  | Generated Tag               |
-|-------------|-----------|--------|-------|-----------------------------|
-| `ubuntu`    | `focal`   |  ✅  |  ✅ | `ubuntu:focal-rolling`      |
+|:-------------|:-----------|:--------:|:-------:|:-----------------------------|
 | `ubuntu`    | `focal`   |  ✅  |  ✅ | `ubuntu:focal-19880312`     |
+| `ubuntu`    | `focal`   |  ✅  |  ✅ | `ubuntu:focal-rolling`      |
 | `alpine`    | `3.16`    |  ✅  |  ✅ | `alpine:rolling`            |
 | `alpine`    | `3.16`    |  ✅  |  ✅ | `alpine:3.16.0`             |
-| `sonarr`    | `develop` |  ❌  |  ❌ | `sonarr-develop:3.0.8.1538` |
-| `sonarr`    | `develop` |  ❌  |  ❌ | `sonarr-develop:rolling`    |
 | `sonarr`    | `main`    |  ✅  |  ❌ | `sonarr:3.0.8.1507`         |
 | `sonarr`    | `main`    |  ✅  |  ❌ | `sonarr:rolling`            |
+| `sonarr`    | `develop` |  ❌  |  ❌ | `sonarr-develop:3.0.8.1538` |
+| `sonarr`    | `develop` |  ❌  |  ❌ | `sonarr-develop:rolling`    |
 
 ## Deprecations
 
