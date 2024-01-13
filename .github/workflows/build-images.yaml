@@ -45,7 +45,7 @@ jobs:
         uses: actions/setup-python@v5.0.0
         with:
           python-version: 3.x
-          # cache: pip
+          cache: pip
 
       - name: Install Python Requirements
         run: pip install -r ./.github/scripts/requirements.txt && pip freeze
@@ -129,6 +129,8 @@ jobs:
         with:
           config-inline: |
             [registry."docker.io"]
+              mirrors = ["zot.int.plexuz.xyz/docker.io"]
+            [registry."registry1.docker.io"]
               mirrors = ["zot.int.plexuz.xyz/docker.io"]
             [registry."ghcr.io"]
               mirrors = ["zot.int.plexuz.xyz/ghcr.io"]
