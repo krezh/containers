@@ -1,3 +1,4 @@
+ARG VERSION
 FROM ghcr.io/krezh/alpine:rolling@sha256:c0c125fac1ad45652f8415ffb8ce3eaaa7fd4d9b1679ea2c43660de0c107eb6f
 ARG TARGETPLATFORM
 ARG VERSION
