@@ -55,7 +55,7 @@ Container | Channel | Image | Latest Tags
 
 Container | Channel | Image | Latest Tags
 --- | --- | --- | ---
-[alpine](https://github.com/krezh/containers/pkgs/container/alpine) | 3.19 | ghcr.io/krezh/alpine |![3.19.0](https://img.shields.io/badge/3.19.0-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
+[alpine](https://github.com/krezh/containers/pkgs/container/alpine) | 3.19 | ghcr.io/krezh/alpine |![3.19.1](https://img.shields.io/badge/3.19.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
 [ubuntu](https://github.com/krezh/containers/pkgs/container/ubuntu) | jammy | ghcr.io/krezh/ubuntu |![jammy-20240111](https://img.shields.io/badge/jammy--20240111-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
 
 
