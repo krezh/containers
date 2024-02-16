@@ -14,7 +14,7 @@ on:
 jobs:
   get-changed-images:
     name: Get Changed Images
-    runs-on: containers-runner
+    runs-on: ubuntu-latest
     outputs:
       addedOrModified: "${{ steps.changed-files.outputs.all_changed_and_modified_files_count > 0 }}"
       addedOrModifiedImages: "${{ steps.changed-containers.outputs.addedOrModifiedImages }}"

@@ -7,7 +7,7 @@ on:
 jobs:
   lint-yaml:
     name: Lint Yaml Files
-    runs-on: containers-runner
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
@@ -39,7 +39,7 @@ jobs:
 
   metadata-validation:
     name: Validate Image Metadata
-    runs-on: containers-runner
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1

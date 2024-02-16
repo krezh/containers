@@ -12,7 +12,7 @@ permissions:
 jobs:
   cleanup:
     name: Cleanup untagged images
-    runs-on: containers-runner
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
