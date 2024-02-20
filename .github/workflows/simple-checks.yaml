@@ -61,7 +61,7 @@ jobs:
 
       - name: Setup CUE
         if: ${{ steps.changed-files.outputs.all_changed_and_modified_files_count > 0 }}
-        uses: cue-lang/setup-cue@v1.0.0
+        uses: cue-lang/setup-cue@v1.0.1
 
       - name: Validate image metadata
         if: ${{ steps.changed-files.outputs.all_changed_and_modified_files == 'true' }}
