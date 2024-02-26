@@ -2,7 +2,7 @@ ARG VERSION
 FROM ghcr.io/opentofu/opentofu:1.6.2 as tofu
 ARG VERSION
 
-FROM ghcr.io/weaveworks/tf-runner:v${VERSION}
+FROM ghcr.io/flux-iac/tf-runner:v${VERSION}
 ARG TARGETPLATFORM
 ARG CHANNEL
 ARG TARGETARCH
