@@ -1,7 +1,7 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
     "local>krezh/renovate-config",
-    "github>krezh/containers//.github/renovate/autoMerge.json5"
-  ]
+    "github>krezh/renovate-config:automerge-docker-digest.json5",
+  ],
 }
