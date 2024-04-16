@@ -1,6 +1,6 @@
 FROM ghcr.io/krezh/par2cmdline-turbo:1.1.1 as par2cmdline-turbo
 
-FROM ghcr.io/krezh/alpine:rolling@sha256:5038dad72effc3fd27b56cadfd129646158c67f9568856b4eca1e15a898140a2
+FROM ghcr.io/krezh/alpine:rolling@sha256:7de9828fc049149826a6379f61c4e84f6849aa0ae4e7e11dbb84290dd44f3b48
 ARG TARGETPLATFORM
 ARG VERSION
 ARG CHANNEL
