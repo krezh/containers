@@ -1,5 +1,5 @@
 ARG VERSION
-FROM ghcr.io/opentofu/opentofu:1.7.0 as tofu
+FROM ghcr.io/opentofu/opentofu:1.7.1 as tofu
 ARG VERSION
 
 FROM ghcr.io/flux-iac/tf-runner:v${VERSION}
