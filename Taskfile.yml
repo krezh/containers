@@ -127,7 +127,7 @@ tasks:
     internal: true
     vars:
       # renovate: datasource=github-releases depName=goss-org/goss
-      GOSS_VERSION: v0.4.4
+      GOSS_VERSION: v0.4.6
     cmds:
       - mkdir -p "{{ .goss_folder }}"
       - curl -fsSL -o "{{ .goss_folder }}/goss" "https://github.com/goss-org/goss/releases/download/{{.GOSS_VERSION}}/goss-linux-{{ARCH}}"
