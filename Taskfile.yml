@@ -134,6 +134,7 @@ tasks:
       - chmod +x "{{ .goss_folder }}/goss"
       - curl -fsSL -o "{{ .goss_folder }}/dgoss" "https://raw.githubusercontent.com/goss-org/goss/{{.GOSS_VERSION}}/extras/dgoss/dgoss"
       - chmod +x "{{ .goss_folder }}/dgoss"
+      - sed '1 s/^.*$/#!\/usr\/bin\/env bash/' -i "{{ .goss_folder }}/dgoss"
     status:
       - test -f "{{ .goss_folder }}/goss"
       - test -f "{{ .goss_folder }}/dgoss"
