@@ -146,6 +146,7 @@ jobs:
         if: ${{ matrix.image.tests_enabled }}
         uses: e1himself/goss-installation-action@v1.2.1
         with:
+          # renovate: datasource=github-releases depName=goss-org/goss
           version: v0.4.2
 
       - name: Prepare Build Outputs
