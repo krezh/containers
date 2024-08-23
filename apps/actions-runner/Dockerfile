@@ -22,6 +22,7 @@ RUN \
         unzip \
         wget \
         zip \
+        xz \
     && rm -rf /var/lib/apt/lists/*
 
 USER runner
