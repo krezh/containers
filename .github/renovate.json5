@@ -3,12 +3,12 @@
   extends: [
     "local>krezh/renovate-config",
     "github>krezh/renovate-config:automerge-docker-digest",
-    "packageRules": [
+  ],
+  packageRules: [
     {
-      "description": "Automerge updates",
-      "matchUpdateTypes": ["major", "minor", "patch"],
-      "automerge": true
-    }
-  ]
+      description: "Automerge updates",
+      matchUpdateTypes: ["major", "minor", "patch"],
+      automerge: true,
+    },
   ],
 }
