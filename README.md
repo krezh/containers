@@ -57,7 +57,7 @@ Container | Channel | Image | Latest Tags
 Container | Channel | Image | Latest Tags
 --- | --- | --- | ---
 [alpine](https://github.com/krezh/containers/pkgs/container/alpine) | 3.19 | ghcr.io/krezh/alpine |![3.19.4](https://img.shields.io/badge/3.19.4-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
-[golang](https://github.com/krezh/containers/pkgs/container/golang) | bookworm | ghcr.io/krezh/golang |![1.23.1](https://img.shields.io/badge/1.23.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
+[golang](https://github.com/krezh/containers/pkgs/container/golang) | bookworm | ghcr.io/krezh/golang |![1.23.2](https://img.shields.io/badge/1.23.2-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
 [ubuntu](https://github.com/krezh/containers/pkgs/container/ubuntu) | jammy | ghcr.io/krezh/ubuntu |![jammy-20240911.1](https://img.shields.io/badge/jammy--20240911.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-green?style=flat-square)
 
 
