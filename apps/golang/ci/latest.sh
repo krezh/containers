@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 channel=$1
 # renovate: datasource=docker depName=docker.io/library/golang
-version="1.23.2"
+version="1.23.3"
 printf "%s" "${version}"
 
