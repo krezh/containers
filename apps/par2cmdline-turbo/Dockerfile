@@ -1,4 +1,4 @@
-FROM docker.io/library/alpine:3.20 as build
+FROM docker.io/library/alpine:3.21 as build
 ARG TARGETARCH
 ARG VERSION
 WORKDIR /tmp
@@ -19,7 +19,7 @@ RUN \
     && make \
     && make install
 
-FROM docker.io/library/alpine:3.20.3
+FROM docker.io/library/alpine:3.21.0
 COPY --from=build /usr/local/bin/par2 /usr/local/bin/par2
 RUN /usr/local/bin/par2 --help
 CMD ["/usr/local/bin/par2"]
