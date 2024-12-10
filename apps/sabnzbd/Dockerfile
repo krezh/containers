@@ -1,4 +1,4 @@
-FROM ghcr.io/krezh/par2cmdline-turbo:1.1.1 as par2cmdline-turbo
+FROM ghcr.io/krezh/par2cmdline-turbo:1.2.0 as par2cmdline-turbo
 
 FROM ghcr.io/krezh/alpine:rolling@sha256:c10c2a52e15132e4ec9924d4cc1ef0dff11f269720778fa133790c2f0dedb723
 ARG TARGETPLATFORM
