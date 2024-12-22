@@ -1,8 +1,9 @@
 ---
 app: valkey
 base: false
+semantic_versioning: true
 channels:
-  - name: "alpine"
+  - name: bookworm
     platforms: ["linux/amd64", "linux/arm64"]
     stable: true
     tests:
