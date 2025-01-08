@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM ghcr.io/krezh/alpine:rolling@sha256:a9832d932ac7234af2c7f6899ed17899c10872f514b1a7378f06041dd619510f
+FROM --platform=$BUILDPLATFORM ghcr.io/krezh/alpine:rolling@sha256:098becf3266ddfda0921bd866f964c2ed031e7fc81537dc1ede5d11c940b063f
 
 ARG TARGETPLATFORM
 ARG VERSION
