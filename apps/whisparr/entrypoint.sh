@@ -7,6 +7,7 @@ test -f "/scripts/umask.sh" && source "/scripts/umask.sh"
 if [[ -f /config/config.xml ]]; then
     current_log_level="$(xmlstarlet sel -t -v "//LogLevel" -nl /config/config.xml)"
     current_url_base="$(xmlstarlet sel -t -v "//UrlBase" -nl /config/config.xml)"
+    current_port="$(xmlstarlet sel -t -v "//Port" -nl /config/config.xml)"
     current_branch="$(xmlstarlet sel -t -v "//Branch" -nl /config/config.xml)"
     current_analytics_enabled="$(xmlstarlet sel -t -v "//AnalyticsEnabled" -nl /config/config.xml)"
     current_api_key="$(xmlstarlet sel -t -v "//ApiKey" -nl /config/config.xml)"
@@ -28,6 +29,7 @@ envsubst < /app/config.xml.tmpl > /config/config.xml
 # Override configuation values from existing config.xml if there are no WHISPARR__ variables set
 [[ -z "${WHISPARR__LOG_LEVEL}" && -n "${current_log_level}" ]] && xmlstarlet edit --inplace --update //LogLevel -v "${current_log_level}" /config/config.xml
 [[ -z "${WHISPARR__URL_BASE}" && -n "${current_url_base}" ]] && xmlstarlet edit --inplace --update //UrlBase -v "${current_url_base}" /config/config.xml
+[[ -z "${WHISPARR__PORT}" && -n "${current_port}" ]] && xmlstarlet edit --inplace --update //Port -v "${current_port}" /config/config.xml
 [[ -z "${WHISPARR__BRANCH}" && -n "${current_branch}" ]] && xmlstarlet edit --inplace --update //Branch -v "${current_branch}" /config/config.xml
 [[ -z "${WHISPARR__ANALYTICS_ENABLED}" && -n "${current_analytics_enabled}" ]] && xmlstarlet edit --inplace --update //AnalyticsEnabled -v "${current_analytics_enabled}" /config/config.xml
 [[ -z "${WHISPARR__API_KEY}" && -n "${current_api_key}" ]] && xmlstarlet edit --inplace --update //ApiKey -v "${current_api_key}" /config/config.xml

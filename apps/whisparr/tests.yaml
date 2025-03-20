@@ -3,7 +3,6 @@
 process:
   Whisparr:
     running: true
-    skip: false
 port:
   tcp6:8989:
     listening: true
