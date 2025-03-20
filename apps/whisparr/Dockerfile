@@ -55,7 +55,7 @@ USER nobody:nogroup
 WORKDIR /config
 VOLUME ["/config"]
 
-COPY ./config.xml.tmpl /app/config.xml.tmpl
+COPY ./config.xml.tmpl /config/config.xml.tmpl
 COPY ./entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/usr/bin/catatonit", "--", "/entrypoint.sh"]
