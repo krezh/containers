@@ -51,12 +51,13 @@ RUN \
     && chmod -R 755 /app \
     && rm -rf /tmp/*
 
+
+COPY ./config.xml.tmpl /app/config.xml.tmpl
+COPY ./entrypoint.sh /entrypoint.sh
+
 USER nobody:nogroup
 WORKDIR /config
 VOLUME ["/config"]
-
-COPY ./config.xml.tmpl /config/config.xml.tmpl
-COPY ./entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/usr/bin/catatonit", "--", "/entrypoint.sh"]
 
