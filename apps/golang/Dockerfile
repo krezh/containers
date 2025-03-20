@@ -1,3 +1,0 @@
-ARG VERSION
-ARG CHANNEL
-FROM docker.io/library/golang:${VERSION}-${CHANNEL}
