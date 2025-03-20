@@ -13,6 +13,9 @@ ENV \
 ENV UMASK="0002" \
     TZ="Etc/UTC"
 
+USER root
+WORKDIR /app
+
 #hadolint ignore=DL3059
 RUN \
     apk add --no-cache \
@@ -48,10 +51,13 @@ RUN \
     && chmod -R 755 /app \
     && rm -rf /tmp/*
 
-USER abc
+USER nobody:nogroup
+WORKDIR /config
+VOLUME ["/config"]
 
 COPY ./config.xml.tmpl /app/config.xml.tmpl
 COPY ./entrypoint.sh /entrypoint.sh
-CMD ["/entrypoint.sh"]
+
+ENTRYPOINT ["/usr/bin/catatonit", "--", "/entrypoint.sh"]
 
 LABEL org.opencontainers.image.title="${WHISPARR__INSTANCE_NAME} (${WHISPARR__BRANCH})"
