@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/goss-org/goss/master/docs/schema.yaml
+process:
+  Whisparr:
+    running: true
+    skip: false
+port:
+  tcp6:8989:
+    listening: true
+http:
+  http://localhost:8989:
+    status: 200

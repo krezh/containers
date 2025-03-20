@@ -1,11 +1,4 @@
 ---
-app: whisparr
-base: false
-semantic_versioning: true
-channels:
-  - name: nightly
-    platforms: ["linux/amd64", "linux/arm64"]
-    stable: false
-    tests:
-      enabled: true
-      type: web
+# renovate: datasource=custom.whisparr depName=whisparr versioning=loose
+version: 2.0.0.872
+name: whisparr

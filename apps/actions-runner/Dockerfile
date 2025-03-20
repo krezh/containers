@@ -1,5 +1,6 @@
 ARG VERSION
-FROM --platform=amd64 ghcr.io/actions/actions-runner:${VERSION}
+FROM ghcr.io/actions/actions-runner:${VERSION}
+ARG TARGETARCH
 
 ENV DEBCONF_NONINTERACTIVE_SEEN=true \
     DEBIAN_FRONTEND="noninteractive" \
@@ -8,9 +9,9 @@ ENV DEBCONF_NONINTERACTIVE_SEEN=true \
 USER root
 
 RUN \
-    apt-get update && apt-get upgrade -y \
+    apt-get -qq update \
     && \
-    apt-get install -y --no-install-recommends \
+    apt-get -qq install -y --no-install-recommends --no-install-suggests \
         ca-certificates \
         curl \
         gcc \
@@ -23,6 +24,8 @@ RUN \
         wget \
         zip \
         xz-utils \
+    && curl -fsSL "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH}" -o /usr/local/bin/yq \
+    && chmod +x /usr/local/bin/yq \
     && rm -rf /var/lib/apt/lists/*
 
 USER runner

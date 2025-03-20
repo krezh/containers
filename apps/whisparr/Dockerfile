@@ -1,19 +1,35 @@
-FROM --platform=$BUILDPLATFORM ghcr.io/krezh/alpine:rolling@sha256:08eb6e7578457f31933e709049ef0c68a1bee26dd96ab615e138539fbef80a57
+FROM docker.io/library/alpine:3.21
 
 ARG TARGETPLATFORM
+ARG VENDOR
 ARG VERSION
-ARG CHANNEL
 
 ENV \
     WHISPARR__INSTANCE_NAME="Whisparr" \
-    WHISPARR__BRANCH="${CHANNEL}" \
+    WHISPARR__BRANCH="nightly" \
     WHISPARR__PORT="8989" \
     WHISPARR__ANALYTICS_ENABLED="False"
 
-#hadolint ignore=DL3018
-RUN apk add --no-cache ca-certificates icu-libs libintl sqlite-libs xmlstarlet tar
+ENV UMASK="0002" \
+    TZ="Etc/UTC"
+
 #hadolint ignore=DL3059
 RUN \
+    apk add --no-cache \
+        bash \
+        ca-certificates \
+        catatonit \
+        coreutils \
+        curl \
+        icu-libs \
+        jo \
+        jq \
+        libintl \
+        nano \
+        sqlite-libs \
+        trurl \
+        tzdata \
+    && \
     case "${TARGETPLATFORM}" in \
         'linux/amd64') export ARCH='x64' ;; \
         'linux/arm64') export ARCH='arm64' ;; \
@@ -21,7 +37,7 @@ RUN \
     && \
     mkdir -p /app/bin \
     && \ 
-    curl -fsSL "https://whisparr.servarr.com/v1/update/nightly/updatefile?version=${VERSION}&os=linuxmusl&runtime=netcore&arch=${ARCH}" \ 
+    curl -fsSL "https://whisparr.servarr.com/v1/update/${WHISPARR__BRANCH}/updatefile?version=${VERSION}&os=linuxmusl&runtime=netcore&arch=${ARCH}" \ 
         | tar xzf - -C "/app/bin" --strip-components=1 \
     && \
     rm -rf \
@@ -32,7 +48,7 @@ RUN \
     && chmod -R 755 /app \
     && rm -rf /tmp/*
 
-USER kah
+USER abc
 
 COPY ./config.xml.tmpl /app/config.xml.tmpl
 COPY ./entrypoint.sh /entrypoint.sh
