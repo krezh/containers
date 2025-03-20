@@ -32,6 +32,7 @@ RUN \
         sqlite-libs \
         trurl \
         tzdata \
+        envsubst \
     && \
     case "${TARGETPLATFORM}" in \
         'linux/amd64') export ARCH='x64' ;; \
