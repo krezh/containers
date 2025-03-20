@@ -1,3 +1,3 @@
 ARG VERSION
 ARG CHANNEL
-FROM docker.io/valkey/valkey:${VERSION}-alpine
+FROM docker.io/valkey/valkey:${VERSION}
