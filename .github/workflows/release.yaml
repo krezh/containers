@@ -108,7 +108,7 @@ jobs:
     with:
       app: ${{ matrix.app.name }}
       version: ${{ matrix.app.version }}
-      release: ${{ github.event_name == 'workflow_dispatch' && inputs.release || github.event_name == 'push' }}
+      release: ${{ github.event_name == 'workflow_dispatch' && inputs.release || github.event_name == 'push' && github.ref_name == 'main' }}
 
   status:
     if: ${{ !cancelled() }}
