@@ -13,65 +13,13 @@ _An opinionated collection of container images_
 
 </div>
 
-## Tag immutability
-
-The containers built here do not use immutable tags, as least not in the more common way you have seen from [linuxserver.io](https://fleet.linuxserver.io/) or [Bitnami](https://bitnami.com/stacks/containers).
-
-We do take a similar approach but instead of appending a `-ls69` or `-r420` prefix to the tag we instead insist on pinning to the sha256 digest of the image, while this is not as pretty it is just as functional in making the images immutable.
-
-| Container                                         | Immutable |
-| ------------------------------------------------- | --------- |
-| `ghcr.io/krezh/sonarr:rolling`                    | ❌        |
-| `ghcr.io/krezh/sonarr:4.0.13.2932`                | ❌        |
-| `ghcr.io/krezh/sonarr:rolling@sha256:8053...`     | ✅        |
-| `ghcr.io/krezh/sonarr:4.0.13.2932@sha256:8053...` | ✅        |
-
-_If pinning an image to the sha256 digest, tools like [Renovate](https://github.com/renovatebot/renovate) support updating the container on a digest or application version change._
-
-## Eschewed features
-
-There is no multiple "channels" of the same application. For example Prowlarr, Radarr, Lidarr, and Sonarr will only have the develop branch published and not the master "stable" branch. Qbittorrent will only be published with LibTorrent 2.x.
-
 ## Rootless
 
 To run these containers as non-root make sure you update your configuration to the user and group you want.
 
-### Docker compose
+## Available Images
 
-```yaml
-networks:
-  sonarr:
-    name: sonarr
-    external: true
-services:
-  sonarr:
-    image: ghcr.io/krezh/sonarr:4.0.13.2932
-    container_name: sonarr
-    user: 65534:65534
-    # ...
-```
-
-### Kubernetes
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sonarr
-# ...
-spec:
-  # ...
-  template:
-    # ...
-    spec:
-      # ...
-      securityContext:
-        runAsUser: 65534
-        runAsGroup: 65534
-        fsGroup: 65534
-        fsGroupChangePolicy: OnRootMismatch
-# ...
-```
+Images can be [browsed on the GitHub Packages page for this repo's packages](https://github.com/krezh?tab=packages&repo_name=containers).
 
 ## Passing arguments to a application
 
