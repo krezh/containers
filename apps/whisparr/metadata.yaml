@@ -1,4 +1,0 @@
----
-# renovate: datasource=custom.whisparr depName=whisparr versioning=loose
-version: 2.0.0.891
-name: whisparr

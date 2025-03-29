@@ -3,93 +3,91 @@
 name: Retry Release
 
 on:
+  schedule:
+    - cron: "30 1 * * *"
   workflow_dispatch:
 
 jobs:
-  upstream:
-    name: Upstream Versions
+  apps:
+    name: Get App Inventory
     runs-on: ubuntu-latest
     outputs:
-      apps: ${{ steps.upstream.outputs.apps }}
+      apps: ${{ steps.inventory.outputs.apps }}
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Gather all current app versions
-        id: upstream
-        run: |
-          apps=$(yq eval-all --indent 0 --output-format json '[.]' apps/*/metadata.yaml)
-          echo "apps=${apps}" >> $GITHUB_OUTPUT
+      - name: Get App Inventory
+        uses: ./.github/actions/app-inventory
+        id: inventory
 
-  current:
-    if: ${{ needs.upstream.outputs.apps != '[]' }}
-    name: Current Versions
+  retry:
+    if: ${{ needs.apps.outputs.apps != '[]' }}
+    name: Retry Release
     runs-on: ubuntu-latest
-    needs: upstream
-    outputs:
-      app: ${{ steps.current.outputs.app }}
+    needs: apps
     strategy:
       matrix:
-        apps: ${{ fromJSON(needs.upstream.outputs.apps) }}
+        app: ${{ fromJSON(needs.apps.outputs.apps) }}
       max-parallel: 4
       fail-fast: false
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup mise
-        uses: jdx/mise-action@5083fe46898c414b2475087cc79da59e7da859e8 # v2.1.11
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Setup Vars
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        id: vars
         with:
-          cache: false
+          script: |
+            core.setOutput('repository-owner', '${{ github.repository_owner }}'.toLowerCase());
 
-      - name: Get current version
-        id: current
+      - name: Generate Token
+        uses: actions/create-github-app-token@af35edadc00be37caa72ed9f3e6d5f7801bfdf09 # v1.11.7
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@d7d6bc7722e3daa8354c50bcb52f4837da5e9b6a # v3.8.1
+
+      - name: Install regctl
+        uses: regclient/actions/regctl-installer@ce5fd131e371ffcdd7508b478cb223b3511a9183 # main
+
+      - name: Get Bake Options
+        id: bake-options
+        uses: ./.github/actions/bake-options
+        with:
+          app: ${{ matrix.app }}
+
+      - name: Get Container Registry Version
+        id: registry
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          version=$(\
-              regctl image inspect ghcr.io/${{ github.repository_owner }}/${{ matrix.apps.name }}:rolling \
-                  | jq --raw-output '.config.Labels["org.opencontainers.image.version"]' \
-          )
-          if [[ "${version}" != "${{ matrix.apps.version }}" ]]; then
-              echo "app=$(gojo $(gojo name="${{ matrix.apps.name }}" version="${version}"))" >> $GITHUB_OUTPUT
-          else
-              echo "app=[]" >> $GITHUB_OUTPUT
+          if ! version=$(regctl image inspect ghcr.io/${{ steps.vars.outputs.repository-owner }}/${{ matrix.app }}:rolling \
+              | jq --raw-output '.config.Labels["org.opencontainers.image.version"]' 2>/dev/null) || [[ -z "${version}" ]];
+          then
+              echo "Failed to get registry version for ${{ matrix.app }}"
+              exit 1
           fi
+          echo "version=${version}" >> $GITHUB_OUTPUT
 
-  build:
-    if: ${{ needs.current.outputs.app != '[]' }}
-    needs: current
-    name: Build ${{ matrix.app.name }}
-    uses: ./.github/workflows/image-build-action.yaml
-    permissions:
-      attestations: write
-      contents: read
-      id-token: write
-      packages: write
-      security-events: write
-    secrets: inherit
-    strategy:
-      matrix:
-        app: ${{ fromJSON(needs.current.outputs.app) }}
-      fail-fast: false
-    with:
-      app: ${{ matrix.app.name }}
-      version: ${{ matrix.app.version }}
-      release: false
+      - if: ${{ steps.bake-options.outputs.version != steps.registry.outputs.version }}
+        name: Retry Release
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh workflow run release.yaml \
+              --repo ${{ github.repository }} \
+              -f app=${{ matrix.app }} \
+              -f release=true
 
-  status:
-    if: ${{ !cancelled() }}
-    needs: build
-    name: Build Success
-    runs-on: ubuntu-latest
-    steps:
-      - name: Any jobs failed?
-        if: ${{ contains(needs.*.result, 'failure') }}
-        run: exit 1
-
-      - name: All jobs passed or skipped?
-        if: ${{ !(contains(needs.*.result, 'failure')) }}
-        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
+          {
+              echo '## Retrying Release'
+              echo
+              echo '| Container Name | Actual Version | Expected Version |'
+              echo '|----------------|------------------|----------------|'
+              echo '| `${{ matrix.app }}` | `${{ steps.registry.outputs.version }}` | `${{ steps.bake-options.outputs.version }}` |'
+          } >> $GITHUB_STEP_SUMMARY
