@@ -1,4 +1,0 @@
----
-# renovate: datasource=github-releases depName=valkey-io/valkey
-version: 8.0.2
-name: valkey
