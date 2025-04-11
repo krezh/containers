@@ -4,9 +4,7 @@ Container for running V-Rising dedicated on Debian Linux with Wine.
 
 ## Usage
 
-Run the container directly, build locally, use the compose file, run in a k8s environment with the helm chart... what ever floats your boat. <br>
-
-Persistent storage should be mounted to /opt/steam/vrising/save-data
+Persistent storage should be mounted to /savedata and /serverdata
 
 ## Environment Variables
 
