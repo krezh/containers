@@ -4,7 +4,7 @@ process:
   VRisingServer.exe:
     running: true
 port:
-  udp:9876:
+  udp:27015:
     listening: true
-  udp:9877:
+  udp:27016:
     listening: true
