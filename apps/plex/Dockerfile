@@ -1,15 +1,13 @@
-FROM docker.io/library/ubuntu:24.04
+# syntax=docker/dockerfile:1
 
+FROM docker.io/library/ubuntu:24.04
 ARG TARGETARCH
 ARG VENDOR
 ARG VERSION
 
-ENV UMASK="0002" \
+ENV DEBIAN_FRONTEND="noninteractive" \
+    UMASK="0002" \
     TZ="Etc/UTC"
-
-ENV DEBCONF_NONINTERACTIVE_SEEN="true" \
-    DEBIAN_FRONTEND="noninteractive" \
-    APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE="DontWarn"
 
 ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,utility" \
     PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR="/config/Library/Application Support" \
@@ -21,7 +19,6 @@ ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,utility" \
 USER root
 WORKDIR /app
 
-# hadolint ignore=DL3008,DL3015,SC2039,SC2086
 RUN \
     apt-get update \
     && \
@@ -31,7 +28,6 @@ RUN \
         catatonit \
         coreutils \
         curl \
-        jo \
         jq \
         nano \
         tzdata \
@@ -48,7 +44,7 @@ RUN \
     && apt-get clean \
     && rm -rf /etc/default/plexmediaserver /tmp/* /var/lib/apt/lists/* /var/tmp/
 
-COPY ./entrypoint.sh /entrypoint.sh
+COPY . /
 
 USER nobody:nogroup
 WORKDIR /config
