@@ -3,6 +3,9 @@
 name: Pull Request
 
 on:
+  push:
+    branches-ignore: ["main"]
+    paths: ["apps/**"]
   pull_request:
     branches: ["main"]
     paths: ["apps/**"]
