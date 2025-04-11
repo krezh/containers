@@ -25,7 +25,7 @@
 
 ## RCON <small>- Optional</small>
 
-To enable RCON edit `ServerHostSettings.json` and paste following lines after `QueryPort`. To communicate using RCON protocal use the [RCON CLI](https://github.com/gorcon/rcon-cli) by gorcon.
+To enable RCON edit `ServerHostSettings.json` and paste following lines after `QueryPort`. To communicate using RCON protocol use the [RCON CLI](https://github.com/gorcon/rcon-cli) by gorcon.
 
 ```json
 "Rcon": {
