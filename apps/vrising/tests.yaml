@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/goss-org/goss/master/docs/schema.yaml
+process:
+  VRisingServer.exe:
+    running: true
+port:
+  udp:9876:
+    listening: true
+  udp:9877:
+    listening: true
