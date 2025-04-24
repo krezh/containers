@@ -2,7 +2,7 @@ target "docker-metadata-action" {}
 
 variable "VERSION" {
   // renovate: datasource=github-releases depName=valkey-io/valkey
-  default = "8.1.0"
+  default = "8.1.1"
 }
 
 group "default" {
