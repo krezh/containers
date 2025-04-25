@@ -42,6 +42,7 @@ RUN useradd -m steam \
       winetricks \
       xvfb \
       steamcmd \
+      vim \
       && ln -s /usr/games/steamcmd /usr/bin/steamcmd \
       && rm -rf /var/lib/apt/lists/* \
       && apt-get clean \
