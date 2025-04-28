@@ -103,8 +103,6 @@ run() {
     -secure "${SECURE}" \
     -listOnEOS "${EOS_LIST}" \
     -listOnSteam "${STEAM_LIST}" \
-    -preset "${GAME_PRESET}" \
-    -difficultyPreset "${DIFFICULTY}" \
     -saveName "${SAVE_NAME}" 2>&1
 }
 
