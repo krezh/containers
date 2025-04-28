@@ -42,8 +42,8 @@ echo " "
 /usr/bin/steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "$serverDir" +login anonymous +app_update "$STEAM_APP_ID" validate +quit
 printf "steam_appid: "
 cat "$serverDir/steam_appid.txt"
-
 echo " "
+
 if ! grep -q -o 'avx[^ ]*' /proc/cpuinfo; then
 	unsupported_file="VRisingServer_Data/Plugins/x86_64/lib_burst_generated.dll"
 	echo "AVX or AVX2 not supported; Check if unsupported ${unsupported_file} exists"
@@ -77,7 +77,9 @@ cd "$serverDir" || {
 	exit 1
 }
 
-echo "Starting V Rising Dedicated Server with name $SERVER_NAME"
+echo "Starting V Rising Dedicated Server"
+echo "Server Name: $SERVER_NAME"
+echo "Server Version: $(cat $serverDir/VERSION)"
 echo " "
 echo "Starting Xvfb"
 Xvfb :0 -screen 0 1024x768x16 &
