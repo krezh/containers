@@ -93,8 +93,19 @@ run() {
     -persistentDataPath "$persistentDataPath" \
     -logFile "$persistentDataPath/$logfile" \
     -serverName "${SERVER_NAME}" \
+    -description "${DESCRIPTION}" \
     -gamePort "${GAME_PORT}" \
     -queryPort "${QUERY_PORT}" \
+    -bindAddress "${BIND_ADDRESS}" \
+    -hideIpAddress "${HIDE_IP}" \
+    -lowerFPSWhenEmpty "${LOWER_FPS_EMPTY}" \
+    -password "${SERVER_PASSWORD}" \
+    -secure "${SECURE}" \
+    -listOnEOS "${EOS_LIST}" \
+    -listOnSteam "${STEAM_LIST}" \
+    -preset "${GAME_PRESET}" \
+    -difficultyPreset "${DIFFICULTY}" \
+		-clanSize "${CLAN_SIZE}" \
     -saveName "${SAVE_NAME}" 2>&1
 }
 
