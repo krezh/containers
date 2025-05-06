@@ -1,4 +1,0 @@
----
-file:
-  /usr/local/bin/valkey-server:
-    exists: true

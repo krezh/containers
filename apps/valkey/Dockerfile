@@ -1,3 +1,0 @@
-ARG VERSION
-ARG CHANNEL
-FROM docker.io/valkey/valkey:${VERSION}
