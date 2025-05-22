@@ -1,5 +1,6 @@
 ARG CRUNCHYDATA_VERSION
 ARG PG_VERSION
+ARG VERSION
 
 FROM docker.io/library/alpine:3.21.3 AS builder
 
