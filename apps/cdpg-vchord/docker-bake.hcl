@@ -21,7 +21,7 @@ group "default" {
 target "image" {
   inherits = ["docker-metadata-action"]
   args = {
-    VERSION = "${PG_VERSION}-${VCHORD_VERSION}"
+    VERSION = "${CRUNCHYDATA_VERSION}"
     PG_VERSION = "${PG_VERSION}"
     VCHORD_VERSION = "${VCHORD_VERSION}"
     CRUNCHYDATA_VERSION = "${CRUNCHYDATA_VERSION}"
