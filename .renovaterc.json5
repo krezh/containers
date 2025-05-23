@@ -1,37 +1,47 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["local>krezh/renovate-config"],
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'local>krezh/renovate-config',
+  ],
   customManagers: [
     {
-      customType: "regex",
-      description: "Process Annotations in Docker Bake",
-      fileMatch: ["(^|/)docker-bake\\.hcl$"],
+      customType: 'regex',
+      description: 'Process Annotations in Docker Bake',
+      managerFilePatterns: [
+        '/(^|/)docker-bake\\.hcl$/',
+      ],
       matchStrings: [
         'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\\n.+ = "(?<currentValue>[^"]+)"',
       ],
-      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+      datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
+      versioningTemplate: '{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}',
     },
   ],
   customDatasources: {
     servarr: {
-      defaultRegistryUrlTemplate: "https://{{packageName}}.servarr.com/v1/update/develop/changes?os=linux&runtime=netcore",
-      format: "json",
-      transformTemplates: ['{"releases":[{"version": $[0].version}]}'],
+      defaultRegistryUrlTemplate: 'https://{{packageName}}.servarr.com/v1/update/develop/changes?os=linux&runtime=netcore',
+      format: 'json',
+      transformTemplates: [
+        '{"releases":[{"version": $[0].version}]}',
+      ],
     },
     sonarr: {
-      defaultRegistryUrlTemplate: "https://services.sonarr.tv/v1/update/develop/changes?os=linux&runtime=netcore&version=4.0",
-      format: "json",
-      transformTemplates: ['{"releases":[{"version": $[0].version}]}'],
+      defaultRegistryUrlTemplate: 'https://services.sonarr.tv/v1/update/develop/changes?os=linux&runtime=netcore&version=4.0',
+      format: 'json',
+      transformTemplates: [
+        '{"releases":[{"version": $[0].version}]}',
+      ],
     },
     whisparr: {
-      defaultRegistryUrlTemplate: "https://whisparr.servarr.com/v1/update/nightly/changes?os=linuxmusl&runtime=netcore",
-      format: "json",
-      transformTemplates: ['{"releases":[{"version": $[0].version}]}'],
+      defaultRegistryUrlTemplate: 'https://whisparr.servarr.com/v1/update/nightly/changes?os=linuxmusl&runtime=netcore',
+      format: 'json',
+      transformTemplates: [
+        '{"releases":[{"version": $[0].version}]}',
+      ],
     },
     plex: {
-      defaultRegistryUrlTemplate: "https://plex.tv/api/downloads/5.json",
-      format: "json",
+      defaultRegistryUrlTemplate: 'https://plex.tv/api/downloads/5.json',
+      format: 'json',
       transformTemplates: [
         '{"releases":[{"version": computer.Linux.version}]}',
       ],
@@ -39,24 +49,42 @@
   },
   packageRules: [
     {
-      description: ["Auto-merge container app updates"],
-      matchFileNames: ["**/docker-bake.hcl"],
+      description: [
+        'Auto-merge container app updates',
+      ],
+      matchFileNames: [
+        '**/docker-bake.hcl',
+      ],
       automerge: true,
-      automergeType: "pr",
+      automergeType: 'pr',
       ignoreTests: false,
     },
     {
-      description: ["Allowed Ubuntu versions for all container images"],
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/ubuntu/"],
-      allowedVersions: "/24\\.04/",
+      description: [
+        'Allowed Ubuntu versions for all container images',
+      ],
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/ubuntu/',
+      ],
+      allowedVersions: '/24\\.04/',
     },
     {
-      description: ["Allowed Python versions for Bazarr"],
-      matchDatasources: ["docker"],
-      matchFileNames: ["apps/bazarr/Dockerfile"],
-      matchPackageNames: ["/python/"],
-      allowedVersions: "/3\\.12/",
+      description: [
+        'Allowed Python versions for Bazarr',
+      ],
+      matchDatasources: [
+        'docker',
+      ],
+      matchFileNames: [
+        'apps/bazarr/Dockerfile',
+      ],
+      matchPackageNames: [
+        '/python/',
+      ],
+      allowedVersions: '/3\\.12/',
     },
   ],
 }
