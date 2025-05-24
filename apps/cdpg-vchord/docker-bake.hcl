@@ -9,7 +9,7 @@ variable "VCHORD_VERSION" {
 }
 
 variable "CRUNCHYDATA_VERSION" {
-  // renovate: datasource=docker depName=registry.developers.crunchydata.com/crunchydata/crunchy-postgres versioning=loose
+  // renovate: datasource=docker depName=registry.developers.crunchydata.com/crunchydata/crunchy-postgres versioning=regex:ubi\\d+-(?<currentValue>.*\\-.*)
   default = "ubi9-16.8-2516"
 }
 
