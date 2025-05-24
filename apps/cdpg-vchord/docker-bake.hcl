@@ -6,7 +6,7 @@ variable "PG_VERSION" {
 
 variable "VCHORD_VERSION" {
   // renovate: datasource=github-releases depName=tensorchord/VectorChord
-  default = "0.3.0"
+  default = "0.4.1"
 }
 
 variable "CRUNCHYDATA_VERSION" {
