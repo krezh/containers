@@ -21,20 +21,6 @@ To run these containers as non-root make sure you update your configuration to t
 
 Images can be [browsed on the GitHub Packages page for this repo's packages](https://github.com/krezh?tab=packages&repo_name=containers).
 
-## Passing arguments to a application
-
-Some applications do not support defining configuration via environment variables and instead only allow certain config to be set in the command line arguments for the app. To circumvent this, for applications that have an `entrypoint.sh` read below.
-
-1. First read the Kubernetes docs on [defining command and arguments for a Container](https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/).
-2. Look up the documentation for the application and find a argument you would like to set.
-3. Set the extra arguments in the `args` section like below.
-
-   ```yaml
-   args:
-     - --port
-     - "8080"
-   ```
-
 ## Configuration volume
 
 For applications that need to have persistent configuration data the config volume is hardcoded to `/config` inside the container. This is not able to be changed in most cases.
