@@ -46,26 +46,47 @@ runs:
               return version.replace(/^v/, '').split('-')[0];
           }
 
-          // Replace last '-' with '.' if the last part is all digits
-          function normalizeVersion(version) {
-              return version.replace(/-(\d+)$/, '.$1');
-          }
-
           function calver() {
               const now = new Date();
               return `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}`;
           }
 
-          const upstreamVersionRaw = '${{ inputs.upstream-version }}';
-          const upstreamVersion = normalizeVersion(upstreamVersionRaw);
+          const upstreamVersion = '${{ inputs.upstream-version }}';
+
+          // Extract version part after last '-' if it's all digits, else keep as is
+          /**
+           * Extracts a numeric version from the input string.
+           * - Primary logic: Matches a pattern like 'ubi9-16.8-2516' and splits it into 'ubi9-16.8' and '2516',
+           *   then combines them into '16.8.2516'.
+           * - Fallback logic: If the primary regex fails, attempts to find the first semver-like part (e.g., '16.8').
+           * - If neither succeeds, returns the original input string.
+           *
+           * @param {string} version - The input version string to process.
+           * @returns {string} - The extracted numeric version or the original string.
+           */
+          function extractNumericVersion(version) {
+              // Match something like 'ubi9-16.8-2516' => ['ubi9-16.8', '2516']
+              const match = version.match(/([\d.]+)-(\d+)$/);
+              if (match) {
+                  return `${match[1]}.${match[2]}`;
+              }
+              // If not, try to find the first semver-like part
+              const semverLike = version.match(/(\d+\.\d+(?:\.\d+)?)/);
+              if (semverLike) {
+                  return semverLike[1];
+              }
+              return version;
+          }
+
+          const normalizedVersion = extractNumericVersion(upstreamVersion);
 
           const strictSemverRegex = /^v?(\d+(\.\d+)?(\.\d+)?)/;
 
-          const parsedVersion = strictSemverRegex.exec(upstreamVersion);
+          const parsedVersion = strictSemverRegex.exec(normalizedVersion);
           const isValidSemver = parsedVersion !== null;
           const parsedSemver = isValidSemver ? semver.coerce(parsedVersion[0]) : null;
           const semanticVersion = isValidSemver ? `${parsedSemver.major}.${parsedSemver.minor}.${parsedSemver.patch}` : calver();
-          const rawVersion = isValidSemver ? sanitize(upstreamVersion) : upstreamVersion;
+          const rawVersion = isValidSemver ? sanitize(normalizedVersion) : normalizedVersion;
 
           core.setOutput('is-valid-semver', isValidSemver);
           core.setOutput('semantic', semanticVersion);
