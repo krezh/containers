@@ -46,12 +46,19 @@ runs:
               return version.replace(/^v/, '').split('-')[0];
           }
 
+          // Replace last '-' with '.' if the last part is all digits
+          function normalizeVersion(version) {
+              return version.replace(/-(\d+)$/, '.$1');
+          }
+
           function calver() {
               const now = new Date();
               return `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}`;
           }
 
-          const upstreamVersion = '${{ inputs.upstream-version }}';
+          const upstreamVersionRaw = '${{ inputs.upstream-version }}';
+          const upstreamVersion = normalizeVersion(upstreamVersionRaw);
+
           const strictSemverRegex = /^v?(\d+(\.\d+)?(\.\d+)?)/;
 
           const parsedVersion = strictSemverRegex.exec(upstreamVersion);
