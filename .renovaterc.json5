@@ -46,6 +46,13 @@
         '{"releases":[{"version": computer.Linux.version}]}',
       ],
     },
+    "pgimages": {
+      "defaultRegistryUrlTemplate": "https://raw.githubusercontent.com/CrunchyData/postgres-operator-examples/main/helm/install/values.yaml",
+      "format": "yaml",
+      "transformTemplates": [
+        "{\"releases\":[{\"version\": $substringAfter($.relatedImages.postgres_16.image, \":\")}]}"
+      ]
+    },
   },
   packageRules: [
     {
