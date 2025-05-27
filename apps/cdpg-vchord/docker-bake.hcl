@@ -27,7 +27,7 @@ target "image" {
   }
   labels = {
     "org.opencontainers.image.source" = "https://github.com/krezh/containers"
-    "org.opencontainers.image.vchord-version" = "${VCHORD_VERSION}"
+    "org.opencontainers.image.description" = "VectorChord Version: ${VCHORD_VERSION}"
   }
 }
 
