@@ -20,13 +20,13 @@ group "default" {
 target "image" {
   inherits = ["docker-metadata-action"]
   args = {
-    VERSION = "${PG_VERSION}-${VCHORD_VERSION}"
+    VERSION = "${CRUNCHYDATA_VERSION}-${VCHORD_VERSION}"
     PG_VERSION = "${PG_VERSION}"
     VCHORD_VERSION = "${VCHORD_VERSION}"
     CRUNCHYDATA_VERSION = "${CRUNCHYDATA_VERSION}"
   }
   labels = {
-    "org.opencontainers.image.source" = ""
+    "org.opencontainers.image.source" = "https://github.com/krezh/containers"
   }
 }
 
