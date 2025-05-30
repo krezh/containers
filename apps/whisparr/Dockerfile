@@ -1,4 +1,4 @@
-FROM docker.io/library/alpine:3.21 as builder
+FROM docker.io/library/alpine:3.22 as builder
 ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT=""
@@ -17,7 +17,7 @@ RUN \
     && upx /go/bin/envsubst
 
 
-FROM docker.io/library/alpine:3.21
+FROM docker.io/library/alpine:3.22
 
 ARG TARGETPLATFORM
 ARG VENDOR
