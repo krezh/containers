@@ -2,7 +2,7 @@ ARG CRUNCHYDATA_VERSION
 ARG PG_VERSION
 ARG VERSION
 
-FROM docker.io/library/alpine:3.21.3 AS builder
+FROM docker.io/library/alpine:3.22.0 AS builder
 
 RUN apk add --no-cache curl alien rpm binutils xz
 
