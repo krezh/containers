@@ -5,7 +5,7 @@ variable "PG_VERSION" {
 }
 
 variable "VCHORD_VERSION" {
-  default = "0.3.0"
+  default = "0.4.3"
 }
 
 variable "CRUNCHYDATA_VERSION" {
