@@ -10,7 +10,7 @@ variable "VCHORD_VERSION" {
 
 variable "CRUNCHYDATA_VERSION" {
   // renovate: datasource=custom.pgimages depName=registry.developers.crunchydata.com/crunchydata/crunchy-postgres versioning=regex:^ubi(?<major>\d+)-(?<minor>\d+)\.(?<patch>\d+)-(?<build>\d+)$
-  default = "ubi9-16.9-2520"
+  default = "ubi9-16.10-2534"
 }
 
 group "default" {
