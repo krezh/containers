@@ -2,7 +2,7 @@ target "docker-metadata-action" {}
 
 variable "VERSION" {
   // renovate: datasource=github-releases depName=Tautulli/Tautulli
-  default = "2.15.3"
+  default = "2.16.0"
 }
 
 group "default" {
