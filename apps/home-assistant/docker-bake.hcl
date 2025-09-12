@@ -2,7 +2,7 @@ target "docker-metadata-action" {}
 
 variable "VERSION" {
   // renovate: datasource=github-releases depName=home-assistant/core
-  default = "2025.9.1"
+  default = "2025.9.2"
 }
 
 group "default" {
