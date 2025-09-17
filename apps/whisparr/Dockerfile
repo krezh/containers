@@ -25,7 +25,7 @@ ARG VERSION
 
 ENV \
     WHISPARR__INSTANCE_NAME="Whisparr" \
-    WHISPARR__BRANCH="nightly" \
+    WHISPARR__BRANCH="eros" \
     WHISPARR__PORT="8989" \
     WHISPARR__ANALYTICS_ENABLED="False"
 
