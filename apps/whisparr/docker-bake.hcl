@@ -2,7 +2,7 @@ target "docker-metadata-action" {}
 
 variable "VERSION" {
   // renovate: datasource=custom.whisparr depName=whisparr versioning=loose
-  default = "2.0.0.1253"
+  default = "2.0.0.1276"
 }
 
 group "default" {
