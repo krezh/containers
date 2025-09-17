@@ -33,7 +33,7 @@
       ],
     },
     whisparr: {
-      defaultRegistryUrlTemplate: 'https://whisparr.servarr.com/v1/update/nightly/changes?os=linuxmusl&runtime=netcore',
+      defaultRegistryUrlTemplate: 'https://whisparr.servarr.com/v1/update/eros/changes?os=linuxmusl&runtime=netcore',
       format: 'json',
       transformTemplates: [
         '{"releases":[{"version": $[0].version}]}',
