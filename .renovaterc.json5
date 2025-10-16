@@ -32,13 +32,6 @@
         '{"releases":[{"version": $[0].version}]}',
       ],
     },
-    whisparr: {
-      defaultRegistryUrlTemplate: 'https://whisparr.servarr.com/v1/update/eros/changes?os=linuxmusl&runtime=netcore',
-      format: 'json',
-      transformTemplates: [
-        '{"releases":[{"version": $[0].version}]}',
-      ],
-    },
     plex: {
       defaultRegistryUrlTemplate: 'https://plex.tv/api/downloads/5.json',
       format: 'json',
@@ -46,10 +39,10 @@
         '{"releases":[{"version": computer.Linux.version}]}',
       ],
     },
-    "pgimages": {
-      "defaultRegistryUrlTemplate": "https://raw.githubusercontent.com/CrunchyData/postgres-operator-examples/main/helm/install/values.yaml",
-      "format": "yaml",
-      "transformTemplates": [
+    pgimages: {
+      defaultRegistryUrlTemplate: "https://raw.githubusercontent.com/CrunchyData/postgres-operator-examples/main/helm/install/values.yaml",
+      format: "yaml",
+      transformTemplates: [
         "{\"releases\":[{\"version\": $substringAfter($.relatedImages.postgres_16.image, \":\")}]}"
       ]
     },
