@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-action.json
-name: Image Versions
+name: App Versions
 description: Takes an upstream version string and returns various version types
 
 inputs:
@@ -11,34 +11,50 @@ inputs:
 outputs:
   is-valid-semver:
     description: If version is valid semantic versioning
-    value: ${{ steps.version.outputs.is-valid-semver }}
+    value: ${{ steps.versions.outputs.is-valid-semver }}
   semantic:
     description: Semantic Version
-    value: ${{ steps.version.outputs.semantic }}
+    value: ${{ steps.versions.outputs.semantic }}
   raw:
     description: Raw Version
-    value: ${{ steps.version.outputs.raw }}
+    value: ${{ steps.versions.outputs.raw }}
   upstream:
     description: Upstream Version
-    value: ${{ steps.version.outputs.upstream }}
+    value: ${{ steps.versions.outputs.upstream }}
 
 runs:
   using: composite
   steps:
+    - name: Create package.json
+      shell: bash
+      run: |-
+        cat > package.json << 'EOF'
+        {
+          "dependencies": {
+            "semver": "^7.7.2"
+          }
+        }
+        EOF
+
     - name: Setup Node
       uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
       with:
+        cache: npm
+        cache-dependency-path: package.json
         node-version: 24.x
 
-    - name: Install Semver
+    - name: Setup Node Dependencies
       shell: bash
-      run: npm install semver
+      run: |-
+        npm install
 
-    - name: Determine Image Versions
+    - name: App Versions
       uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
-      id: version
+      id: versions
+      env:
+        UPSTREAM_VERSION: ${{ inputs.upstream-version }}
       with:
-        script: |
+        script: |-
           const semver = require('semver');
 
           // Strip the v prefix and pre-release info
@@ -51,21 +67,8 @@ runs:
               return `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}`;
           }
 
-          const upstreamVersion = '${{ inputs.upstream-version }}';
-
-          // Extract version part after last '-' if it's all digits, else keep as is
-          /**
-           * Extracts a numeric version from the input string.
-           * - Primary logic: Matches a pattern like 'ubi9-16.8-2516' and splits it into 'ubi9-16.8' and '2516',
-           *   then combines them into '16.8.2516'.
-           * - Fallback logic: If the primary regex fails, attempts to find the first semver-like part (e.g., '16.8').
-           * - If neither succeeds, returns the original input string.
-           *
-           * @param {string} version - The input version string to process.
-           * @returns {string} - The extracted numeric version or the original string.
-           */
           function extractNumericVersion(version) {
-              // Match something like 'ubi9-16.8-2516' => ['ubi9-16.8', '2516']
+              // Match something like 'ubi9-16.11-2547' => ['ubi9-16.11', '2547']
               const match = version.match(/([\d.]+)-(\d+)$/);
               if (match) {
                   return `${match[1]}.${match[2]}`;
@@ -78,13 +81,14 @@ runs:
               return version;
           }
 
+          const upstreamVersion = process.env.UPSTREAM_VERSION;
           const normalizedVersion = extractNumericVersion(upstreamVersion);
 
           const strictSemverRegex = /^v?(\d+(\.\d+)?(\.\d+)?)/;
 
           const parsedVersion = strictSemverRegex.exec(normalizedVersion);
           const isValidSemver = parsedVersion !== null;
-          const parsedSemver = isValidSemver ? semver.coerce(parsedVersion[0]) : null;
+          const parsedSemver = isValidSemver ? semver.coerce(parsedVersion[0], {loose: true }) : null;
           const semanticVersion = isValidSemver ? `${parsedSemver.major}.${parsedSemver.minor}.${parsedSemver.patch}` : calver();
           const rawVersion = isValidSemver ? sanitize(normalizedVersion) : normalizedVersion;
 

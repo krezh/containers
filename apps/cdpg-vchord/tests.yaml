@@ -1,6 +1,0 @@
----
-schemaVersion: "2.0.0"
-fileExistenceTests:
-  - name: vchord.so
-    path: /usr/pgsql-16/lib/vchord.so
-    shouldExist: true

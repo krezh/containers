@@ -1,7 +1,15 @@
 target "docker-metadata-action" {}
 
+variable "APP" {
+  default = "vrising"
+}
+
 variable "VERSION" {
   default = "1.0.1"
+}
+
+variable "SOURCE" {
+  default = "https://github.com/krezh/containers"
 }
 
 group "default" {
@@ -14,13 +22,14 @@ target "image" {
     VERSION = "${VERSION}"
   }
   labels = {
-    "org.opencontainers.image.source" = "https://github.com/krezh/containers"
+    "org.opencontainers.image.source" = "${SOURCE}"
   }
 }
 
 target "image-local" {
   inherits = ["image"]
   output = ["type=docker"]
+  tags = ["${APP}:${VERSION}"]
 }
 
 target "image-all" {

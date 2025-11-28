@@ -1,8 +1,16 @@
 target "docker-metadata-action" {}
 
+variable "APP" {
+  default = "actions-runner"
+}
+
 variable "VERSION" {
   // renovate: datasource=docker depName=ghcr.io/actions/actions-runner
   default = "2.330.0"
+}
+
+variable "SOURCE" {
+  default = "https://github.com/actions/runner"
 }
 
 group "default" {
@@ -15,13 +23,14 @@ target "image" {
     VERSION = "${VERSION}"
   }
   labels = {
-    "org.opencontainers.image.source" = "https://github.com/actions/runner"
+    "org.opencontainers.image.source" = "${SOURCE}"
   }
 }
 
 target "image-local" {
   inherits = ["image"]
   output = ["type=docker"]
+  tags = ["${APP}:${VERSION}"]
 }
 
 target "image-all" {
