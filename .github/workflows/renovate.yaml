@@ -34,7 +34,7 @@ jobs:
           ref: main
           workflow: renovate.yaml
           workflow_inputs: |-
-            { "autodiscoverFilter": "${{ github.event.repository.name }}" }
+            { "repo": "${{ github.event.repository.name }}" }
 
       - name: Await Renovate Completion
         uses: Codex-/await-remote-run@a56c556e6434d2d7ec9438dc656143b39532324e # v1.13.0
