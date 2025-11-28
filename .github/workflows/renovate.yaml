@@ -30,7 +30,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           owner: ${{ github.repository_owner }}
-          repo: .github
+          repo: renovate-config
           ref: main
           workflow: renovate.yaml
           workflow_inputs: |-
@@ -41,11 +41,11 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           owner: ${{ github.repository_owner }}
-          repo: .github
+          repo: renovate-config
           run_id: ${{ steps.dispatch.outputs.run_id }}
 
       - name: Renovate Output
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |-
-          gh run view --repo ${{ github.repository_owner }}/.github --log ${{ steps.dispatch.outputs.run_id }}
+          gh run view --repo ${{ github.repository_owner }}/renovate-config --log ${{ steps.dispatch.outputs.run_id }}
