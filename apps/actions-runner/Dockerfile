@@ -20,6 +20,7 @@ RUN \
     wget \
     zstd \
     xz-utils \
+    udev \
     && \
     case "${TARGETARCH}" in \
     'amd64') apt-get -qq install -y --no-install-recommends --no-install-suggests gcc ;; \
@@ -36,6 +37,10 @@ RUN \
     && apt update \
     && apt install gh -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN mkdir -p /etc/udev/rules.d \
+    && groupadd -g ${KVM_GID} kvm 2>/dev/null || true \
+    && usermod -aG kvm runner
 
 USER runner
 
