@@ -363,4 +363,5 @@ jobs:
           title: App build failed
           username: GitHub Actions
           url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ack_no_webhook: true
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
