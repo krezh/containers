@@ -2,7 +2,7 @@
 
 FROM ubuntu:22.04 AS builder
 
-ARG RUNNER_VERSION=2.321.0
+ARG VERSION=2.321.0
 ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /build
@@ -36,7 +36,7 @@ RUN virt-customize -a ubuntu.img \
     --run-command 'apt-get update' \
     --install 'ca-certificates,curl,jq,git,tar,sudo,docker.io,docker-buildx,docker-compose-v2' \
     --run-command 'mkdir -p /opt/runner' \
-    --run-command "curl -o /opt/runner/actions-runner-linux.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" \
+    --run-command "curl -o /opt/runner/actions-runner-linux.tar.gz -L https://github.com/actions/runner/releases/download/v${VERSION}/actions-runner-linux-x64-${VERSION}.tar.gz" \
     --run-command 'cd /opt/runner && tar xzf actions-runner-linux.tar.gz && rm actions-runner-linux.tar.gz' \
     --run-command 'cd /opt/runner && ./bin/installdependencies.sh' \
     --run-command 'useradd -m -s /bin/bash runner' \
