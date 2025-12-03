@@ -35,7 +35,7 @@ target "image" {
 target "image-local" {
   inherits = ["image"]
   output = ["type=docker"]
-  tags = ["${APP}:${VERSION}"]
+  tags = ["${APP}:${RUNNER_VERSION}"]
   # Enable security.insecure for virt-customize to work
   allow = ["security.insecure"]
 }
