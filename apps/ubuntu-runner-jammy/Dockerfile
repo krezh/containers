@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:24.04 AS builder
 
 ARG RUNNER_VERSION=2.321.0
 ARG DEBIAN_FRONTEND=noninteractive
