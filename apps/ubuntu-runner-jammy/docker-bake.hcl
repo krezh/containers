@@ -4,10 +4,6 @@ variable "APP" {
   default = "ubuntu-runner-jammy"
 }
 
-variable "VERSION" {
-  default = "22.04"
-}
-
 variable "SOURCE" {
   default = "https://github.com/krezh/containers"
 }
@@ -16,7 +12,7 @@ group "default" {
   targets = ["image-local"]
 }
 
-variable "RUNNER_VERSION" {
+variable "VERSION" {
   // renovate: datasource=github-releases depName=actions/runner
   default = "2.330.0"
 }
@@ -24,8 +20,7 @@ variable "RUNNER_VERSION" {
 target "image" {
   inherits = ["docker-metadata-action"]
   args = {
-    UBUNTU_VERSION = "${VERSION}"
-    RUNNER_VERSION = "${RUNNER_VERSION}"
+    VERSION = "${VERSION}"
   }
   labels = {
     "org.opencontainers.image.source" = "${SOURCE}"
@@ -35,7 +30,7 @@ target "image" {
 target "image-local" {
   inherits = ["image"]
   output = ["type=docker"]
-  tags = ["${APP}:${RUNNER_VERSION}"]
+  tags = ["${APP}:${VERSION}"]
   # Enable security.insecure for virt-customize to work
   allow = ["security.insecure"]
 }
