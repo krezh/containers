@@ -18,7 +18,7 @@ group "default" {
 
 variable "RUNNER_VERSION" {
   // renovate: datasource=github-releases depName=actions/runner
-  default = "2.321.0"
+  default = "2.330.0"
 }
 
 target "image" {
