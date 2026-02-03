@@ -14,7 +14,7 @@ variable "PG_VERSION" {
 }
 
 variable "VCHORD_VERSION" {
-  default = "0.4.3"
+  default = "1.0.0"
 }
 
 variable "SOURCE" {
