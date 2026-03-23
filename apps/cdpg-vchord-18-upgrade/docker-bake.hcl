@@ -5,7 +5,7 @@ variable "APP" {
 }
 
 variable "VERSION" {
-  // renovate: datasource=docker depName=registry.developers.crunchydata.com/crunchydata/crunchy-upgrade versioning=regex:^ubi(?<major>\d+)-(?<minor>\d+)\.(?<patch>\d+)-(?<build>\d+)$
+  // renovate: datasource=custom.crunchy-upgrade-18 depName=registry.developers.crunchydata.com/crunchydata/crunchy-upgrade versioning=regex:^ubi(?<major>\d+)-(?<minor>\d+)\.(?<patch>\d+)-(?<build>\d+)$
   default = "ubi9-18.1-2550"
 }
 

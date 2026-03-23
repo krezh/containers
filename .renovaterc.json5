@@ -29,6 +29,21 @@
       format: "json",
       transformTemplates: ['{"releases":[{"version": qbittorrent}]}'],
     },
+    "crunchy-postgres-16": {
+      defaultRegistryUrlTemplate: "https://raw.githubusercontent.com/CrunchyData/postgres-operator/main/config/components/images-by-tag/kustomization.yaml",
+      format: "yaml",
+      transformTemplates: ['{"releases": $.images[?(@.name=="image-crunchy-postgres-16")].{version: newTag}}'],
+    },
+    "crunchy-postgres-18": {
+      defaultRegistryUrlTemplate: "https://raw.githubusercontent.com/CrunchyData/postgres-operator/main/config/components/images-by-tag/kustomization.yaml",
+      format: "yaml",
+      transformTemplates: ['{"releases": $.images[?(@.name=="image-crunchy-postgres-18")].{version: newTag}}'],
+    },
+    "crunchy-upgrade-18": {
+      defaultRegistryUrlTemplate: "https://raw.githubusercontent.com/CrunchyData/postgres-operator/main/config/components/images-by-tag/kustomization.yaml",
+      format: "yaml",
+      transformTemplates: ['{"releases": $.images[?(@.name=="image-crunchy-upgrade")].{version: newTag}}'],
+    },
     "servarr-develop": {
       defaultRegistryUrlTemplate: "https://{{packageName}}.servarr.com/v1/update/develop/changes?os=linux&runtime=netcore",
       format: "json",
@@ -100,20 +115,6 @@
       matchFileNames: ["apps/nzbhydra2/Dockerfile"],
       matchPackageNames: ["/amazoncorretto/"],
       allowedVersions: "/17-alpine3\\.22/",
-    },
-    {
-      description: ["Allowed CrunchyData Postgres 16 Version"],
-      matchDatasources: ["docker"],
-      matchFileNames: ["apps/cdpg-vchord/docker-bake.hcl"],
-      matchPackageNames: ["/crunchy-postgres/"],
-      allowedVersions: "/^ubi9-16\\./",
-    },
-    {
-      description: ["Allowed CrunchyData Postgres 18 Version"],
-      matchDatasources: ["docker"],
-      matchFileNames: ["apps/cdpg-vchord-18/docker-bake.hcl", "apps/cdpg-vchord-18-upgrade/docker-bake.hcl"],
-      matchPackageNames: ["/crunchy-postgres/", "/crunchy-upgrade/"],
-      allowedVersions: "/^ubi9-18\\./",
     },
   ],
 }
