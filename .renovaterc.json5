@@ -32,17 +32,17 @@
     "crunchy-postgres-16": {
       defaultRegistryUrlTemplate: "https://raw.githubusercontent.com/CrunchyData/postgres-operator/main/config/components/images-by-tag/kustomization.yaml",
       format: "yaml",
-      transformTemplates: ['{"releases": images[name="image-crunchy-postgres-16"].{"version": newTag}}'],
+      transformTemplates: ['{"releases": [images[name="image-crunchy-postgres-16"] ~> |$| {"version": $.newTag}|]}'],
     },
     "crunchy-postgres-18": {
       defaultRegistryUrlTemplate: "https://raw.githubusercontent.com/CrunchyData/postgres-operator/main/config/components/images-by-tag/kustomization.yaml",
       format: "yaml",
-      transformTemplates: ['{"releases": images[name="image-crunchy-postgres-18"].{"version": newTag}}'],
+      transformTemplates: ['{"releases": [images[name="image-crunchy-postgres-18"] ~> |$| {"version": $.newTag}|]}'],
     },
     "crunchy-upgrade-18": {
       defaultRegistryUrlTemplate: "https://raw.githubusercontent.com/CrunchyData/postgres-operator/main/config/components/images-by-tag/kustomization.yaml",
       format: "yaml",
-      transformTemplates: ['{"releases": images[name="image-crunchy-upgrade"].{"version": newTag}}'],
+      transformTemplates: ['{"releases": [images[name="image-crunchy-upgrade"] ~> |$| {"version": $.newTag}|]}'],
     },
     "servarr-develop": {
       defaultRegistryUrlTemplate: "https://{{packageName}}.servarr.com/v1/update/develop/changes?os=linux&runtime=netcore",
@@ -115,6 +115,14 @@
       matchFileNames: ["apps/nzbhydra2/Dockerfile"],
       matchPackageNames: ["/amazoncorretto/"],
       allowedVersions: "/17-alpine3\\.22/",
+    },
+    {
+      description: ["Skip digest lookup for CrunchyData custom datasources"],
+      matchDatasources: ["custom.crunchy-postgres-16", "custom.crunchy-postgres-18", "custom.crunchy-upgrade-18"],
+      digest: {
+        enabled: false,
+      },
+      followTag: false,
     },
   ],
 }
