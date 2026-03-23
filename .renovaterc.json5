@@ -116,12 +116,5 @@
       matchPackageNames: ["/amazoncorretto/"],
       allowedVersions: "/17-alpine3\\.22/",
     },
-    {
-      description: ["Skip digest lookup for CrunchyData custom datasources"],
-      matchDatasources: ["custom.crunchy-postgres-16", "custom.crunchy-postgres-18", "custom.crunchy-upgrade-18"],
-      digest: {
-        enabled: false,
-      },
-    },
   ],
 }
