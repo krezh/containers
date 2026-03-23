@@ -6,7 +6,7 @@ variable "APP" {
 
 variable "VERSION" {
   // renovate: datasource=custom.crunchy-postgres-16 depName=crunchy-postgres-16 versioning=regex:^ubi(?<major>\d+)-(?<minor>\d+)\.(?<patch>\d+)-(?<build>\d+)$
-  default = "ubi9-16.11-2547"
+  default = "ubi9-16.13-2610"
 }
 
 variable "PG_VERSION" {
