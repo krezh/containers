@@ -122,7 +122,6 @@
       digest: {
         enabled: false,
       },
-      followTag: false,
     },
   ],
 }
