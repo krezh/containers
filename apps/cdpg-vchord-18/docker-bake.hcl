@@ -17,6 +17,10 @@ variable "VCHORD_VERSION" {
   default = "1.0.0"
 }
 
+variable "TIMESCALEDB_VERSION" {
+  default = "2.25.2"
+}
+
 variable "SOURCE" {
   default = "https://github.com/krezh/containers"
 }
@@ -31,6 +35,7 @@ target "image" {
     VERSION = "${VERSION}"
     PG_VERSION = "${PG_VERSION}"
     VCHORD_VERSION = "${VCHORD_VERSION}"
+    TIMESCALEDB_VERSION = "${TIMESCALEDB_VERSION}"
     CRUNCHYDATA_VERSION = "${VERSION}"
   }
   labels = {

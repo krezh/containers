@@ -1,6 +1,7 @@
 ARG CRUNCHYDATA_VERSION
 ARG PG_VERSION
 ARG VERSION
+ARG TIMESCALEDB_VERSION=2.25.2
 
 FROM docker.io/library/alpine:3.22.3 AS builder
 
@@ -21,6 +22,7 @@ ARG CRUNCHYDATA_VERSION
 FROM registry.developers.crunchydata.com/crunchydata/crunchy-postgres:${CRUNCHYDATA_VERSION}
 
 ARG PG_VERSION
+ARG TIMESCALEDB_VERSION
 
 COPY --chown=root:root --chmod=755 --from=builder /tmp/usr/lib/postgresql/${PG_VERSION}/lib/vchord.so /usr/pgsql-${PG_VERSION}/lib/
 COPY --chown=root:root --chmod=755 --from=builder /tmp/usr/share/postgresql/${PG_VERSION}/extension/vchord* /usr/pgsql-${PG_VERSION}/share/extension/
@@ -42,7 +44,7 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 EOF
 
 microdnf remove -y timescaledb_${PG_VERSION}
-microdnf install -y --nodocs timescaledb-2-postgresql-${PG_VERSION}
+microdnf install -y --nodocs timescaledb-2-postgresql-${PG_VERSION}-${TIMESCALEDB_VERSION}
 
 rm -f /etc/yum.repos.d/timescaledb.repo
 microdnf clean all
