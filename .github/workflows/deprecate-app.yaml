@@ -25,6 +25,7 @@ jobs:
   plan:
     name: Plan (${{ inputs.app }})
     runs-on: ubuntu-latest
+    environment: prod
     outputs:
       pull-number: ${{ steps.pr.outputs.pull-request-number }}
     steps:
@@ -37,7 +38,7 @@ jobs:
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
-          app-id: ${{ secrets.BOT_APP_ID }}
+          client-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Delete App Directory
@@ -65,23 +66,27 @@ jobs:
     needs:
       - plan
     runs-on: ubuntu-latest
+    environment: prod
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
-          app-id: ${{ secrets.BOT_APP_ID }}
+          client-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Merge Pull Request
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          PR_NUMBER: ${{ needs.plan.outputs.pull-number }}
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |-
+            const { PR_NUMBER } = process.env;
             await github.rest.pulls.merge({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: ${{ needs.plan.outputs.pull-number }},
+              pull_number: PR_NUMBER,
               merge_method: 'squash',
             });
 
@@ -91,6 +96,7 @@ jobs:
     needs:
       - merge
     runs-on: ubuntu-latest
+    environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -101,7 +107,7 @@ jobs:
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
-          app-id: ${{ secrets.BOT_APP_ID }}
+          client-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Get Release Tag
@@ -110,7 +116,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: Create Release
+      - name: Create Release # zizmor: ignore[superfluous-actions]
         uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           body: |

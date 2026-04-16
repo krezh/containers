@@ -32,8 +32,11 @@ jobs:
       - name: Check Version Results
         env:
           INPUT_VERSION: ${{ inputs.version }}
+          IS_VALID: ${{ steps.app-versions.outputs.is-valid-semver }}
+          SEMANTIC: ${{ steps.app-versions.outputs.semantic }}
+          RAW: ${{ steps.app-versions.outputs.raw }}
         run: |-
           echo "Input Version: ${INPUT_VERSION}"
-          echo "Is Valid Semver: ${{ steps.app-versions.outputs.is-valid-semver }}"
-          echo "Semantic Version: ${{ steps.app-versions.outputs.semantic }}"
-          echo "Raw Version: ${{ steps.app-versions.outputs.raw }}"
+          echo "Is Valid Semver: ${IS_VALID}"
+          echo "Semantic Version: ${SEMANTIC}"
+          echo "Raw Version: ${RAW}"
