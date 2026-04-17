@@ -24,6 +24,7 @@ jobs:
   prepare:
     name: Prepare
     runs-on: ubuntu-latest
+    environment: prod
     outputs:
       changed-files: ${{ steps.changed-files.outputs.changed_files }}
     steps:
@@ -38,6 +39,7 @@ jobs:
   changed:
     if: ${{ needs.prepare.outputs.changed-files != '[]' || github.event_name == 'workflow_dispatch' }}
     name: Get Changed Apps
+    environment: prod
     needs:
       - prepare
     runs-on: ubuntu-latest
@@ -82,6 +84,7 @@ jobs:
   status:
     if: ${{ !cancelled() }}
     name: Build Success
+    environment: prod
     needs:
       - build
     runs-on: ubuntu-latest

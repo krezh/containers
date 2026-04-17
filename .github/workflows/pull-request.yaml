@@ -10,6 +10,7 @@ jobs:
   prepare:
     name: Prepare
     runs-on: ubuntu-latest
+    environment: prod
     outputs:
       changed-files: ${{ steps.changed-files.outputs.changed_files }}
     steps:
@@ -45,6 +46,7 @@ jobs:
   status:
     if: ${{ !cancelled() }}
     name: Build Success
+    environment: prod
     needs:
       - build
     runs-on: ubuntu-latest
