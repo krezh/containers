@@ -18,7 +18,6 @@ jobs:
   plan:
     name: Plan
     runs-on: ubuntu-latest
-    environment: prod
     outputs:
       app-exists: ${{ steps.app-exists.outputs.exists }}
       platforms: ${{ steps.app-options.outputs.platforms }}

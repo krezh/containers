@@ -14,7 +14,6 @@ jobs:
   apps:
     name: Get App Inventory
     runs-on: ubuntu-latest
-    environment: prod
     outputs:
       apps: ${{ steps.inventory.outputs.apps }}
     steps:
@@ -31,7 +30,6 @@ jobs:
     if: ${{ needs.apps.outputs.apps != '[]' }}
     name: Retry Release
     runs-on: ubuntu-latest
-    environment: prod
     needs:
       - apps
     strategy:

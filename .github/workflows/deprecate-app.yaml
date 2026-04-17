@@ -25,7 +25,6 @@ jobs:
   plan:
     name: Plan (${{ inputs.app }})
     runs-on: ubuntu-latest
-    environment: prod
     outputs:
       pull-number: ${{ steps.pr.outputs.pull-request-number }}
     steps:
@@ -63,7 +62,6 @@ jobs:
   merge:
     if: ${{ inputs.release }}
     name: Merge (${{ inputs.app }})
-    environment: prod
     needs:
       - plan
     runs-on: ubuntu-latest
@@ -90,7 +88,6 @@ jobs:
   announce:
     if: ${{ inputs.release }}
     name: Announce (${{ inputs.app }})
-    environment: prod
     needs:
       - merge
     runs-on: ubuntu-latest
