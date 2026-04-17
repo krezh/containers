@@ -14,7 +14,6 @@ jobs:
   stale:
     name: Stale
     runs-on: ubuntu-latest
-    environment: prod
     permissions:
       actions: write
       contents: write
@@ -25,7 +24,7 @@ jobs:
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
-          client-id: "${{ secrets.BOT_APP_ID }}"
+          app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
       - name: Stale

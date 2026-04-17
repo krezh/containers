@@ -88,12 +88,9 @@ jobs:
       - name: Get Target Architecture
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         id: target
-        env:
-          PLATFORM: ${{ matrix.platform }}
         with:
           script: |-
-            const { PLATFORM } = process.env;
-            core.setOutput('arch', PLATFORM.split('/').pop());
+            core.setOutput('arch', '${{ matrix.platform }}'.split('/').pop());
 
       - name: Get App Options
         uses: ./.github/actions/app-options
@@ -118,10 +115,8 @@ jobs:
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
 
       - name: Add Include Directory to Build Context
-        env:
-          APP: ${{ inputs.app }}
         run: |-
-          rsync -a --ignore-existing --progress ./include/ ./apps/${APP}/
+          rsync -a --ignore-existing --progress ./include/ ./apps/${{ inputs.app }}/
 
       - name: Build App
         uses: docker/bake-action@a66e1c87e2eca0503c343edf1d208c716d54b8a8 # v7.1.0
@@ -146,11 +141,9 @@ jobs:
           targets: image
 
       - name: Export Digest
-        env:
-          METADATA: ${{ toJSON(steps.bake.outputs.metadata) }}
         run: |-
           mkdir -p ${{ runner.temp }}/digests
-          DIGEST="$(echo "$METADATA" | jq -r '.image["containerimage.digest"]')"
+          DIGEST="${{ fromJSON(steps.bake.outputs.metadata).image['containerimage.digest'] }}"
           touch "${{ runner.temp }}/digests/${DIGEST#sha256:}"
 
       - name: Upload Digest
@@ -196,26 +189,20 @@ jobs:
 
       - name: Create Manifest List and Push
         working-directory: ${{ runner.temp }}/digests
-        env:
-          APP: ${{ inputs.app }}
         run: |-
           docker buildx imagetools create \
-              $(jq --raw-output --compact-output '.target."docker-metadata-action".tags | map(select(startswith("ghcr.io/${{ github.repository_owner }}/'${APP}'")) | "-t " + .) | join(" ")' ${{ runner.temp }}/docker-metadata-action-bake.json) \
-              $(printf 'ghcr.io/${{ github.repository_owner }}/'${APP}'@sha256:%s ' *)
+              $(jq --raw-output --compact-output '.target."docker-metadata-action".tags | map(select(startswith("ghcr.io/${{ github.repository_owner }}/${{ inputs.app }}")) | "-t " + .) | join(" ")' ${{ runner.temp }}/docker-metadata-action-bake.json) \
+              $(printf 'ghcr.io/${{ github.repository_owner }}/${{ inputs.app }}@sha256:%s ' *)
 
       - name: Inspect Image
-        env:
-          APP: ${{ inputs.app }}
         run: |-
-          docker buildx imagetools inspect ghcr.io/${{ github.repository_owner }}/${APP}:$(jq --raw-output '.target."docker-metadata-action".args.DOCKER_META_VERSION' ${{ runner.temp }}/docker-metadata-action-bake.json)
+          docker buildx imagetools inspect ghcr.io/${{ github.repository_owner }}/${{ inputs.app }}:$(jq --raw-output '.target."docker-metadata-action".args.DOCKER_META_VERSION' ${{ runner.temp }}/docker-metadata-action-bake.json)
 
       - name: Export Digest
         id: digest
-        env:
-          APP: ${{ inputs.app }}
         run: |-
           TAG=$(jq --raw-output '.target."docker-metadata-action".args.DOCKER_META_VERSION' ${{ runner.temp }}/docker-metadata-action-bake.json)
-          DIGEST=$(docker buildx imagetools inspect ghcr.io/${{ github.repository_owner }}/${APP}:${TAG} --format '{{ json . }}' | jq --raw-output '.manifest.digest')
+          DIGEST=$(docker buildx imagetools inspect ghcr.io/${{ github.repository_owner }}/${{ inputs.app }}:${TAG} --format '{{ json . }}' | jq --raw-output '.manifest.digest')
           echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
 
   attest:
@@ -247,10 +234,8 @@ jobs:
       - name: Verify Attestation
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          APP: ${{ inputs.app }}
-          DIGEST: ${{ needs.merge.outputs.digest }}
         run: |-
-          gh attestation verify --repo ${{ github.repository }} oci://ghcr.io/${{ github.repository_owner }}/${APP}@${DIGEST}
+          gh attestation verify --repo ${{ github.repository }} oci://ghcr.io/${{ github.repository_owner }}/${{ inputs.app }}@${{ needs.merge.outputs.digest }}
 
   test:
     if: ${{ ! inputs.release }}
@@ -259,7 +244,6 @@ jobs:
       - merge
       - attest
     runs-on: ubuntu-latest
-    environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -270,7 +254,7 @@ jobs:
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
-          client-id: ${{ secrets.BOT_APP_ID }}
+          app-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Run App Tests
@@ -302,7 +286,6 @@ jobs:
       - plan
       - attest
     runs-on: ubuntu-latest
-    environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -313,7 +296,7 @@ jobs:
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
-          client-id: ${{ secrets.BOT_APP_ID }}
+          app-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Get App Options
@@ -328,7 +311,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: Create Release # zizmor: ignore[superfluous-actions]
+      - name: Create Release
         uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           body: |
@@ -352,7 +335,6 @@ jobs:
       - announce
     name: Notify
     runs-on: ubuntu-latest
-    environment: prod
     steps:
       - if: ${{ contains(needs.*.result, 'failure') }}
         name: Checkout
