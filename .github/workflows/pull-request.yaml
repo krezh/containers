@@ -6,10 +6,14 @@ on:
   merge_group:
   pull_request:
 
+permissions: {}
+
 jobs:
   prepare:
     name: Prepare
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       changed-files: ${{ steps.changed-files.outputs.changed_files }}
     steps:
@@ -26,7 +30,7 @@ jobs:
     name: Build ${{ matrix.app }}
     needs:
       - prepare
-    uses: ./.github/workflows/app-builder.yaml
+    uses: ./.github/workflows/app-builder.yaml # zizmor: ignore[secrets-inherit]
     permissions:
       attestations: write
       contents: read
@@ -48,6 +52,7 @@ jobs:
     needs:
       - build
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Any jobs failed?
         if: ${{ contains(needs.*.result, 'failure') }}
@@ -56,5 +61,7 @@ jobs:
 
       - name: All jobs passed or skipped?
         if: ${{ !(contains(needs.*.result, 'failure')) }}
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
         run: |-
-          echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
+          echo "All jobs passed or skipped" && echo "${RESULTS}"

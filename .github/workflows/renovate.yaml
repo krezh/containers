@@ -15,12 +15,15 @@ jobs:
   renovate:
     name: Renovate
     runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      contents: read
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
-          app-id: ${{ secrets.BOT_APP_ID }}
+          client-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
@@ -47,5 +50,7 @@ jobs:
       - name: Renovate Output
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          OWNER: ${{ github.repository_owner }}
+          RUN_ID: ${{ steps.dispatch.outputs.run_id }}
         run: |-
-          gh run view --repo ${{ github.repository_owner }}/renovate-config --log ${{ steps.dispatch.outputs.run_id }}
+          gh run view --repo ${OWNER}/renovate-config --log ${RUN_ID}

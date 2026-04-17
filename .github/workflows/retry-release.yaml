@@ -30,6 +30,7 @@ jobs:
     if: ${{ needs.apps.outputs.apps != '[]' }}
     name: Retry Release
     runs-on: ubuntu-latest
+    environment: prod
     needs:
       - apps
     strategy:
@@ -47,7 +48,7 @@ jobs:
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: app-token
         with:
-          app-id: ${{ secrets.BOT_APP_ID }}
+          client-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Install Cosign
@@ -66,11 +67,13 @@ jobs:
         id: registry
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP: ${{ matrix.app }}
+          OWNER: ${{ github.repository_owner }}
         run: |-
-          if ! version=$(regctl image inspect ghcr.io/${{ github.repository_owner }}/${{ matrix.app }}:rolling \
+          if ! version=$(regctl image inspect ghcr.io/${OWNER}/${APP}:rolling \
               | jq --raw-output '.config.Labels["org.opencontainers.image.version"]' 2>/dev/null) || [[ -z "${version}" ]];
           then
-              echo "Failed to get registry version for ${{ matrix.app }}"
+              echo "Failed to get registry version for ${APP}"
               exit 1
           fi
           echo "version=${version}" >> $GITHUB_OUTPUT
@@ -88,10 +91,14 @@ jobs:
         name: Retry Release
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |- # zizmor: ignore[template-injection]
+          REPO: ${{ github.repository }}
+          APP: ${{ matrix.app }}
+          ACTUAL_VERSION: ${{ steps.registry.outputs.version }}
+          EXPECTED_VERSION: ${{ steps.app-options.outputs.version }}
+        run: |-
           gh workflow run release.yaml \
-              --repo ${{ github.repository }} \
-              -f app=${{ matrix.app }} \
+              --repo ${REPO} \
+              -f app=${APP} \
               -f release=true
 
           {
@@ -99,5 +106,5 @@ jobs:
               echo
               echo '| App Name | Actual Version | Expected Version |'
               echo '|----------|----------------|------------------|'
-              echo '| `${{ matrix.app }}` | `${{ steps.registry.outputs.version }}` | `${{ steps.app-options.outputs.version }}` |'
+              echo '| `'"${APP}"'` | `'"${ACTUAL_VERSION}"'` | `'"${EXPECTED_VERSION}"'` |'
           } >> $GITHUB_STEP_SUMMARY
