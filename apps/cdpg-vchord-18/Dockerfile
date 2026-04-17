@@ -3,7 +3,7 @@ ARG PG_VERSION
 ARG VERSION
 ARG TIMESCALEDB_VERSION=2.25.2
 
-FROM docker.io/library/alpine:3.22.3 AS builder
+FROM docker.io/library/alpine:3.22.4 AS builder
 
 RUN apk add --no-cache curl alien rpm binutils xz
 
