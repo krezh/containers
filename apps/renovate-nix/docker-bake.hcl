@@ -4,7 +4,7 @@ variable "APP" {
   default = "renovate-nix"
 }
 
-variable "RENOVATE_VERSION" {
+variable "VERSION" {
   // renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
   default = "43.150.0"
 }
@@ -25,7 +25,7 @@ group "default" {
 target "image" {
   inherits = ["docker-metadata-action"]
   args = {
-    RENOVATE_VERSION = "${RENOVATE_VERSION}"
+    VERSION  = "${VERSION}"
     NIX_VERSION = "${NIX_VERSION}"
   }
   labels = {
@@ -36,7 +36,7 @@ target "image" {
 target "image-local" {
   inherits = ["image"]
   output = ["type=docker"]
-  tags = ["${APP}:${RENOVATE_VERSION}"]
+  tags = ["${APP}:${VERSION}"]
 }
 
 target "image-all" {

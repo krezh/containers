@@ -1,7 +1,7 @@
-ARG RENOVATE_VERSION
+ARG VERSION
 ARG NIX_VERSION
 
-FROM ghcr.io/renovatebot/renovate:${RENOVATE_VERSION}
+FROM ghcr.io/renovatebot/renovate:${VERSION}
 
 ARG NIX_VERSION
 ENV NIX_VERSION=${NIX_VERSION}
