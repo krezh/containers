@@ -8,22 +8,27 @@ ENV NIX_VERSION=${NIX_VERSION}
 
 USER root
 
-# Create /nix directory with proper permissions
-RUN mkdir -p /nix && chown -R ubuntu:ubuntu /nix
+# Create directories for nix
+RUN mkdir -p /nix /opt/nix && \
+    chown -R ubuntu:ubuntu /nix /opt/nix
 
 USER ubuntu
 
-# Install Nix manually to get /nix/store (for binary cache)
+# Install Nix manually to /opt/nix to avoid containerbase conflicts
 RUN curl -SsL "https://releases.nixos.org/nix/nix-${NIX_VERSION}/install" | sh -s -- --no-daemon && \
     mkdir -p "$HOME/.config/nix" && \
     { \
       echo "experimental-features = nix-command flakes"; \
       echo "accept-flake-config = true"; \
-    } > "$HOME/.config/nix/nix.conf"
+    } > "$HOME/.config/nix/nix.conf" && \
+    mkdir -p /opt/nix/profile && \
+    cp -a "$HOME/.local/state/nix/profiles/profile"/* /opt/nix/profile/ && \
+    rm -rf "$HOME/.local/state/nix" "$HOME/.nix-profile" && \
+    ln -s /opt/nix/profile "$HOME/.nix-profile"
 
 USER root
 
-# Set PATH as ENV so it's available to all processes
-ENV PATH="/home/ubuntu/.nix-profile/bin:${PATH}"
+# Set PATH to use /opt/nix location
+ENV PATH="/opt/nix/profile/bin:${PATH}"
 
 USER ubuntu
