@@ -11,10 +11,9 @@ func Test(t *testing.T) {
 	ctx := context.Background()
 	image := testhelpers.GetTestImage("ghcr.io/krezh/renovate-nix:rolling")
 
-	// Test that entrypoint script exists and is executable
-	testhelpers.TestFileExists(t, ctx, image, "/usr/local/bin/entrypoint.sh", nil)
+	// Test that Nix is installed and available
+	testhelpers.TestCommandSucceeds(t, ctx, image, nil, "nix", "--version")
 
-	// Test that the entrypoint installs Nix and it works
-	// The entrypoint will install Nix on first run, then verify it's available
-	testhelpers.TestCommandSucceeds(t, ctx, image, nil, "/usr/local/bin/entrypoint.sh", "--version")
+	// Test that renovate still works
+	testhelpers.TestCommandSucceeds(t, ctx, image, nil, "renovate", "--version")
 }
