@@ -8,12 +8,14 @@ ENV NIX_VERSION=${NIX_VERSION}
 
 USER root
 
-# Install Nix using containerbase (like official renovate image does)
+# Install Nix using containerbase (required for renovate compatibility)
 RUN containerbase-cli install tool nix ${NIX_VERSION}
 
-# Configure Nix settings
-RUN mkdir -p /etc/nix && \
-    echo "experimental-features = nix-command flakes" > /etc/nix/nix.conf && \
-    echo "accept-flake-config = true" >> /etc/nix/nix.conf
-
 USER ubuntu
+
+# Configure Nix settings in user home (where containerbase nix reads it)
+RUN mkdir -p "$HOME/.config/nix" && \
+    { \
+      echo "experimental-features = nix-command flakes"; \
+      echo "accept-flake-config = true"; \
+    } > "$HOME/.config/nix/nix.conf"
