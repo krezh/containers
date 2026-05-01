@@ -16,15 +16,21 @@ USER ubuntu
 
 # Install Nix manually to /opt/nix to avoid containerbase conflicts
 RUN curl -SsL "https://releases.nixos.org/nix/nix-${NIX_VERSION}/install" | sh -s -- --no-daemon && \
-    mkdir -p "$HOME/.config/nix" && \
-    { \
-      echo "experimental-features = nix-command flakes"; \
-      echo "accept-flake-config = true"; \
-    } > "$HOME/.config/nix/nix.conf" && \
     mkdir -p /opt/nix/profile && \
     cp -a "$HOME/.local/state/nix/profiles/profile"/* /opt/nix/profile/ && \
     rm -rf "$HOME/.local/state/nix" "$HOME/.nix-profile" && \
     ln -s /opt/nix/profile "$HOME/.nix-profile"
+
+USER root
+
+# Put nix config in /etc/nix (system-wide, not affected by /tmp mount)
+RUN mkdir -p /etc/nix && \
+    { \
+      echo "experimental-features = nix-command flakes"; \
+      echo "accept-flake-config = true"; \
+    } > /etc/nix/nix.conf
+
+USER ubuntu
 
 USER root
 
