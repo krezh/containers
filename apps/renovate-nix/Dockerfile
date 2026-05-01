@@ -23,14 +23,6 @@ RUN curl -SsL "https://releases.nixos.org/nix/nix-${NIX_VERSION}/install" | sh -
 
 USER root
 
-# Add nix to PATH in env.d (for entrypoint)
-RUN mkdir -p /usr/local/env.d && \
-    { \
-      echo '#!/bin/bash'; \
-      echo 'export PATH="/home/ubuntu/.nix-profile/bin:${PATH}"'; \
-    } > /usr/local/env.d/90-nix.sh && \
-    chmod +x /usr/local/env.d/90-nix.sh
-
 # Set PATH as ENV so it's available to all processes
 ENV PATH="/home/ubuntu/.nix-profile/bin:${PATH}"
 
