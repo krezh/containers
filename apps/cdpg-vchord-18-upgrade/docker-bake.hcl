@@ -6,7 +6,7 @@ variable "APP" {
 
 variable "VERSION" {
   // renovate: datasource=custom.crunchy-upgrade-18 depName=crunchy-upgrade-18 versioning=regex:^ubi(?<major>\d+)-(?<minor>\d+)\.(?<patch>\d+)-(?<build>\d+)$
-  default = "ubi9-18.3-2610"
+  default = "ubi9-18.4-2621"
 }
 
 variable "PG_VERSION" {
