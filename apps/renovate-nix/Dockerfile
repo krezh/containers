@@ -30,8 +30,6 @@ RUN mkdir -p /etc/nix && \
       echo "accept-flake-config = true"; \
     } > /etc/nix/nix.conf
 
-USER ubuntu
-
 USER root
 
 # Set PATH to use /opt/nix location
