@@ -11,46 +11,40 @@ on:
       - .renovate/**.json5
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WEBHOOK_URL: https://renovate-webhook.plexuz.xyz/webhook/v1/schedule
+  WEBHOOK_NAMESPACE: ci
+  WEBHOOK_JOB: github
+
 jobs:
   renovate:
-    name: Renovate
+    name: Trigger Renovate Operator
     runs-on: ubuntu-latest
     environment: prod
     permissions:
       contents: read
     steps:
-      - name: Generate Token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        id: app-token
-        with:
-          client-id: ${{ secrets.BOT_APP_ID }}
-          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-
-      - name: Run Renovate
-        uses: codex-/return-dispatch@16fa9d14771c4d56ae0196bbda1d3c17f7f3650f # v3.0.2
-        id: dispatch
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          owner: ${{ github.repository_owner }}
-          repo: renovate-config
-          ref: main
-          workflow: renovate.yaml
-          workflow_inputs: |-
-            { "repo": "${{ github.event.repository.name }}" }
-
-      - name: Await Renovate Completion
-        uses: Codex-/await-remote-run@2512346665df8818ec7ad6aca3cdceb7626cd384 # v2
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          owner: ${{ github.repository_owner }}
-          repo: renovate-config
-          run_id: ${{ steps.dispatch.outputs.run_id }}
-
-      - name: Renovate Output
+      - name: Call Renovate Operator webhook
+        shell: bash
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          OWNER: ${{ github.repository_owner }}
-          RUN_ID: ${{ steps.dispatch.outputs.run_id }}
-        run: |-
-          gh run view --repo ${OWNER}/renovate-config --log ${RUN_ID}
+          WEBHOOK_TOKEN: ${{ secrets.RENOVATE_OPERATOR_WEBHOOK }}
+          PROJECT: ${{ github.repository }}
+        run: |
+          if [ -z "${WEBHOOK_TOKEN}" ]; then
+            echo "::error::RENOVATE_OPERATOR_WEBHOOK secret is not set"
+            exit 1
+          fi
+
+          status=$(curl --silent --show-error \
+            --request POST \
+            --header "Authorization: Bearer ${WEBHOOK_TOKEN}" \
+            --output /dev/stderr \
+            --write-out "%{http_code}" \
+            "${WEBHOOK_URL}?namespace=${WEBHOOK_NAMESPACE}&job=${WEBHOOK_JOB}&project=${PROJECT/\//%2F}")
+
+          echo "Webhook for ${PROJECT} responded with HTTP ${status}"
+          [ "${status}" = "200" ]
