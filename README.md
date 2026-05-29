@@ -9,7 +9,6 @@ _An opinionated collection of container images_
 <div align="center">
 
 [![Release](https://img.shields.io/github/actions/workflow/status/krezh/containers/release.yaml?branch=main&style=for-the-badge&logo=github&logoColor=white&color=blue&label=%20)](https://github.com/krezh/containers/actions/workflows/release.yaml)
-[![Renovate](https://img.shields.io/github/actions/workflow/status/krezh/renovate-config/renovate.yaml?branch=main&style=for-the-badge&logo=renovate&logoColor=white&color=blue&label=%20)](https://github.com/krezh/renovate-config/actions/workflows/renovate.yaml)
 
 </div>
 
