@@ -3,10 +3,12 @@ FROM docker.io/library/node:24-slim
 ARG TARGETARCH
 ARG VERSION
 ARG III_VERSION=0.11.2
+ARG WITH_LOCAL_EMBEDDINGS=false
 
 ENV \
     AGENTMEMORY_DATA_DIR=/data \
     AGENTMEMORY_HMAC_FILE=/data/.hmac \
+    AGENTMEMORY_VIEWER_HOST=0.0.0.0 \
     III_REST_PORT=3111 \
     NODE_ENV=production
 
@@ -32,17 +34,28 @@ RUN \
     && iii --version \
     && npm install -g --omit=optional --no-fund --no-audit \
         "@agentmemory/agentmemory@${VERSION}" \
-        @xenova/transformers \
-    && find /usr/local/lib/node_modules/@agentmemory/agentmemory \
-        -name 'iii-config.yaml' -print0 \
-        | xargs -0 -r sed -i 's/host: 127\.0\.0\.1/host: 0.0.0.0/g' \
-    && find /usr/local/lib/node_modules/@agentmemory/agentmemory \
-        -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \) -print0 \
-        | xargs -0 -r sed -i -E 's/\.listen\(([a-zA-Z_][a-zA-Z0-9_]*), "127\.0\.0\.1"/.listen(\1, "0.0.0.0"/g' \
+    && AMM="/usr/local/lib/node_modules/@agentmemory/agentmemory/node_modules" \
+    && if [ "${WITH_LOCAL_EMBEDDINGS}" != "true" ]; then \
+         rm -rf \
+             "${AMM}/onnxruntime-node" \
+             "${AMM}/onnxruntime-web" \
+             "${AMM}/onnxruntime-common" \
+             "${AMM}/onnx-proto" \
+             "${AMM}/@xenova" \
+             "${AMM}/sharp" \
+             "${AMM}/@node-rs" \
+             "${AMM}/tiny-segmenter"; \
+       fi \
     && mkdir -p /data \
     && chown -R node:node /data /app \
+    && apt-get purge -y --auto-remove curl \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /root/.npm
+    && rm -rf /var/lib/apt/lists/* /root/.npm \
+        /usr/local/lib/node_modules/npm \
+        /usr/local/lib/node_modules/corepack \
+        /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack
+
+ENV AGENTMEMORY_III_CONFIG=/usr/local/lib/node_modules/@agentmemory/agentmemory/iii-config.docker.yaml
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -53,7 +66,7 @@ LABEL org.opencontainers.image.source="https://github.com/rohitg00/agentmemory" 
 
 USER node:node
 WORKDIR /data
-EXPOSE 3111
+EXPOSE 3111 3112 3113
 VOLUME ["/data"]
 
 ENTRYPOINT ["/usr/bin/catatonit", "--", "/entrypoint.sh"]

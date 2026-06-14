@@ -13,6 +13,10 @@ variable "SOURCE" {
   default = "https://github.com/rohitg00/agentmemory"
 }
 
+variable "WITH_LOCAL_EMBEDDINGS" {
+  default = "false"
+}
+
 group "default" {
   targets = ["image-local"]
 }
@@ -20,7 +24,8 @@ group "default" {
 target "image" {
   inherits = ["docker-metadata-action"]
   args = {
-    VERSION = "${VERSION}"
+    VERSION               = "${VERSION}"
+    WITH_LOCAL_EMBEDDINGS = "${WITH_LOCAL_EMBEDDINGS}"
   }
   labels = {
     "org.opencontainers.image.source"      = "${SOURCE}"
