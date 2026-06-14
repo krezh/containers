@@ -1,0 +1,9 @@
+# Ignore all files by default
+**
+
+# Allow specific files
+!Dockerfile
+!docker-bake.hcl
+!docker-bake.json
+!*.sh
+!*.sql
