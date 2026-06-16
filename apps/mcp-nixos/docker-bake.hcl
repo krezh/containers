@@ -1,20 +1,16 @@
 target "docker-metadata-action" {}
 
 variable "APP" {
-  default = "agentmemory"
+  default = "mcp-nixos"
 }
 
 variable "VERSION" {
-  // renovate: datasource=npm depName=@agentmemory/agentmemory
-  default = "0.9.27"
+  // renovate: datasource=pypi depName=mcp-nixos
+  default = "2.4.3"
 }
 
 variable "SOURCE" {
-  default = "https://github.com/rohitg00/agentmemory"
-}
-
-variable "WITH_LOCAL_EMBEDDINGS" {
-  default = "false"
+  default = "https://github.com/utensils/mcp-nixos"
 }
 
 group "default" {
@@ -24,13 +20,12 @@ group "default" {
 target "image" {
   inherits = ["docker-metadata-action"]
   args = {
-    VERSION               = "${VERSION}"
-    WITH_LOCAL_EMBEDDINGS = "${WITH_LOCAL_EMBEDDINGS}"
+    VERSION = "${VERSION}"
   }
   labels = {
     "org.opencontainers.image.source"      = "${SOURCE}"
-    "org.opencontainers.image.title"       = "agentmemory"
-    "org.opencontainers.image.description" = "Persistent memory for AI coding agents (REST + MCP shim)"
+    "org.opencontainers.image.title"       = "mcp-nixos"
+    "org.opencontainers.image.description" = "MCP server for NixOS, nixpkgs, Home Manager & nix-darwin search"
   }
 }
 
