@@ -35,8 +35,7 @@ USER root
 # Set PATH to use /opt/nix location
 ENV PATH="/opt/nix/profile/bin:${PATH}"
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
 USER ubuntu
 
