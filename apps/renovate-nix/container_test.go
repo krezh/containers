@@ -25,6 +25,6 @@ func TestNixGitHubToken(t *testing.T) {
 	testhelpers.TestCommandSucceeds(t, ctx, image,
 		&testhelpers.ContainerConfig{Env: map[string]string{"RENOVATE_TOKEN": "test-token"}},
 		"/entrypoint.sh",
-		"grep", "access-tokens = github.com=test-token", "/home/ubuntu/.config/nix/nix.conf",
+		"sh", "-c", `[ "$NIX_CONFIG" = "access-tokens = github.com=test-token" ]`,
 	)
 }
