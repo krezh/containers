@@ -32,8 +32,18 @@ RUN mkdir -p /etc/nix && \
 
 USER root
 
-# Set PATH to use /opt/nix location
-ENV PATH="/opt/nix/profile/bin:${PATH}"
+# Wrapper that injects RENOVATE_TOKEN into NIX_CONFIG per-invocation so GitHub
+# API calls are authenticated; baked into the image so it works even when the
+# operator runs renovate directly (bypassing ENTRYPOINT).
+RUN mkdir -p /opt/nix/wrapper && \
+    { \
+      echo '#!/bin/sh'; \
+      echo '[ -n "${RENOVATE_TOKEN:-}" ] && export NIX_CONFIG="access-tokens = github.com=$RENOVATE_TOKEN"'; \
+      echo 'exec /opt/nix/profile/bin/nix "$@"'; \
+    } > /opt/nix/wrapper/nix && \
+    chmod +x /opt/nix/wrapper/nix
+
+ENV PATH="/opt/nix/wrapper:/opt/nix/profile/bin:${PATH}"
 
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 

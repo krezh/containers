@@ -1,8 +1,4 @@
 #!/usr/bin/env sh
 set -e
-
-if [ -n "$RENOVATE_TOKEN" ]; then
-    export NIX_CONFIG="access-tokens = github.com=$RENOVATE_TOKEN"
-fi
-
+echo "[entrypoint] token=${RENOVATE_TOKEN:+PRESENT}${RENOVATE_TOKEN:-ABSENT}"
 exec "$@"
