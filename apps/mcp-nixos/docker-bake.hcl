@@ -6,7 +6,7 @@ variable "APP" {
 
 variable "VERSION" {
   // renovate: datasource=pypi depName=mcp-nixos
-  default = "2.4.3"
+  default = "3.0.0"
 }
 
 variable "SOURCE" {
