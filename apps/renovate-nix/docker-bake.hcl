@@ -11,7 +11,7 @@ variable "VERSION" {
 
 variable "NIX_VERSION" {
   // renovate: datasource=github-tags depName=NixOS/nix
-  default = "2.35.2"
+  default = "2.35.3"
 }
 
 variable "SOURCE" {
