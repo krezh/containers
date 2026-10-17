@@ -6,6 +6,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/moby/moby/api/types/container"
 	"github.com/stretchr/testify/require"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
@@ -22,7 +23,8 @@ func GetTestImage(defaultImage string) string {
 
 // ContainerConfig holds optional container configuration
 type ContainerConfig struct {
-	Env map[string]string // Environment variables to set in the container
+	Env  map[string]string // Environment variables to set in the container
+	User string            // User (uid[:gid]) to run the container as, overriding the image USER
 }
 
 // applyContainerConfig applies optional container configuration
@@ -36,6 +38,12 @@ func applyContainerConfig(config *ContainerConfig) []testcontainers.ContainerCus
 	// Apply environment variables
 	if len(config.Env) > 0 {
 		opts = append(opts, testcontainers.WithEnv(config.Env))
+	}
+
+	if config.User != "" {
+		opts = append(opts, testcontainers.WithConfigModifier(func(c *container.Config) {
+			c.User = config.User
+		}))
 	}
 
 	return opts

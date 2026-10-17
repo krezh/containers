@@ -1,0 +1,6 @@
+# Ignore all files by default
+**
+
+# Allow build inputs
+!Dockerfile
+!docker-bake.hcl
