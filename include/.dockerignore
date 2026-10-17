@@ -6,3 +6,4 @@
 !scripts/
 !entrypoint.sh
 !pgvectors.sql
+!config.xml.tmpl

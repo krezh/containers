@@ -1,0 +1,8 @@
+# Ignore all files by default
+**
+
+# Allow build inputs
+!Dockerfile
+!docker-bake.hcl
+!entrypoint.sh
+!config.xml.tmpl

@@ -59,6 +59,11 @@
       format: "json",
       transformTemplates: ['{"releases":[{"version": $[0].version}]}'],
     },
+    "whisparr-eros": {
+      defaultRegistryUrlTemplate: "https://api.github.com/repos/Whisparr/Whisparr-Eros/releases/latest",
+      format: "json",
+      transformTemplates: ['{"releases":[{"version": name}]}'],
+    },
     plex: {
       defaultRegistryUrlTemplate: "https://plex.tv/api/downloads/5.json",
       format: "json",
