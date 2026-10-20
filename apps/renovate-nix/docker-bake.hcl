@@ -6,7 +6,7 @@ variable "APP" {
 
 variable "VERSION" {
   // renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
-  default = "44.171.6"
+  default = "44.171.8"
 }
 
 variable "NIX_VERSION" {
